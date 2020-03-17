@@ -24,7 +24,6 @@ const valuesEnvToReplace = () => {
 
 const production = !process.env.ROLLUP_WATCH;
 const api = process.env.API_URL
-console.log('api', api)
 
 export default {
 	input: 'src/main.js',
@@ -39,6 +38,7 @@ export default {
 			process: JSON.stringify({
 				env: {
 					teste: "Testando",
+					TITLE: 'TITLE' in ENV_VARS ? ENV_VARS.TITLE : process.env.TITLE,
 					API_URL: 'API_URL' in ENV_VARS ? ENV_VARS.API_URL : process.env.API_URL
 				}
 			}),

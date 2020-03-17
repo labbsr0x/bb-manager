@@ -24,22 +24,31 @@
 	}
 </script>
 
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <button class="btn btn-link" on:click={updateApps} >Banco do Brasil</button>
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+  <a class="navbar-brand" href="" on:click={updateApps} >{process.env.TITLE}</a>
 </nav>
 <div class="container-fluid">
   <div class="row">
     <nav id="sidebarMenu" class="col-md-2 d-md-block bg-light sidebar collapse">
       <div class="sidebar-sticky">
         <ul class="nav flex-column">
+		  <li class="nav-item">
+            <span data-feather="home">Lista de aplicativos</span>
+          </li>
 		  {#each apps as app, i}
           <li class="nav-item">
             <button class="btn btn-link" aria-current="page" on:click={updateNameApp(app)}>
-              <span data-feather="home"></span>
-              {app}
+              <span data-feather="home">{app}</span>
+              
             </button>
           </li>
 		  {/each}
+		  <li class="nav-item">
+            <button class="btn btn-link" style="font-size: 12px;" aria-current="page" on:click={updateNameApp(app)}>
+              <span data-feather="home">Criar app</span>
+              
+            </button>
+          </li>
         </ul>
       </div>
     </nav>
