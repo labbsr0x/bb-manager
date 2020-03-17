@@ -3,8 +3,28 @@ import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
+import replace from '@rollup/plugin-replace'
+import dotenv from 'dotenv'
+import fs from 'fs'
+import path from 'path'
+
+dotenv.config()
+
+const fileEnv = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'
+
+// get the env variables from the .env file relative to the current NODE_ENV
+const ENV_VARS = dotenv.parse(fs.readFileSync(path.resolve(__dirname, fileEnv)))
+
+const valuesEnvToReplace = () => {
+  return Object.entries(ENV_VARS).reduce((acc, [key, val]) => {
+    acc[`process.env.${key}`] = JSON.stringify(val)
+    return acc
+  }, {})
+}
 
 const production = !process.env.ROLLUP_WATCH;
+const api = process.env.API_URL
+console.log('api', api)
 
 export default {
 	input: 'src/main.js',
@@ -15,6 +35,15 @@ export default {
 		file: 'public/build/bundle.js'
 	},
 	plugins: [
+		replace({
+			process: JSON.stringify({
+				env: {
+					teste: "Testando",
+					API_URL: 'API_URL' in ENV_VARS ? ENV_VARS.API_URL : process.env.API_URL
+				}
+			}),
+			...valuesEnvToReplace()
+		}),
 		svelte({
 			// enable run-time checks when not in production
 			dev: !production,

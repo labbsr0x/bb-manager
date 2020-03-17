@@ -1,10 +1,10 @@
 <script>
-	import api from './api.js'
+	import api from './api'
 	import Ips from './Ips.svelte'
 	let apps = []
 	let nameApp = ''
 	api.get(`/listApps`).then(response => {
-		console.log(`response`, response)
+		// console.log(`response`, response)
 		apps = response.data.result
 	}).catch(error => {
 		console.log(`error`, error)
@@ -12,14 +12,14 @@
 	const updateApps = async () => {
 		try {
 			let response = await api.get('/listApps')
-			console.log(`response on update`, response)
+			// console.log(`response on update`, response)
 			apps = response.data.apps
 		} catch (err) {
 			console.log(`erro`, err)
 		}
 	}
 	const updateNameApp = async (app) => {
-		console.log(`name app on app`, app)
+		// console.log(`name app on app`, app)
 		nameApp = app
 	}
 </script>

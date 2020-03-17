@@ -1,5 +1,5 @@
 <script>
-    import api from './api.js'
+    import api from './api'
     import { beforeUpdate } from 'svelte';
     export let nameApp = null
     let ips = []
@@ -10,7 +10,7 @@
 	async function list() {
 		try {
 			let response = await api.get(`/listIps/${nameApp}`)
-			console.log(`response ips`, response)
+			// console.log(`response ips`, response)
 			ips = response.data.result
 		} catch (err) {
 			console.log(`erro`, err)
@@ -19,7 +19,7 @@
     async function deleteIp(ip) {
         try {
 			// let response = await api.get(`/listIps/${nameApp}`)
-            console.log(`delete ip`, ip)
+            // console.log(`delete ip`, ip)
             await api.post('/remove/ip', {
                 app: nameApp,
                 ip: ip
@@ -33,12 +33,26 @@
     async function addIp() {
         try {
             // let response = await api.get(`/listIps/${nameApp}`)
+            // console.log("adicionar novo ip")
             if (newIp !== null && newIp !== '' && newIp !== undefined) {
-                let response = await api.post('/add/ip', {
-                    app: nameApp,
-                    ip: newIp
-                })
-                console.log('response', response)
+                let hasIps = newIp.split(",").map(o => o.replace(/\"/g, ""))
+                hasIps = hasIps.filter(i => i !== "" && i !== null && i !== undefined)
+                // console.log(`has ips`, hasIps)
+                let response = null
+                if (hasIps.length > 1) {
+                    let requests = hasIps.map(i => api.post('/add/ip', {
+                        app: nameApp,
+                        ip: i
+                    }))
+                    response = await Promise.all(requests)
+                } else {
+                    response = await api.post('/add/ip', {
+                        app: nameApp,
+                        ip: newIp
+                    })
+                }
+                
+                // console.log('response add ip', response)
                 newIp = ''
                 await list()
             }
@@ -48,7 +62,7 @@
 		}
     }
     async function downloadFiles () {
-        console.log('Download')
+        // console.log('Download')
         let copyIps = [...ips]
         for (let i = 0; i < ips.length / nrFiles; i++) {
             let json = [
@@ -63,7 +77,7 @@
     }
     beforeUpdate(() => {
         if (nameApp !== null && nameApp !== '' && oldName !== nameApp) {
-            console.log(`new name app`, nameApp)
+            // console.log(`new name app`, nameApp)
             oldName = nameApp
             list()
         }
@@ -72,7 +86,7 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Dados</h1>
 </div>
-<div class="row">
+<div class="row p-3">
     <div class="col-md-6">
         <p>Adicionar novo Ip para o app: {nameApp}</p>
         <input bind:value={newIp} />
