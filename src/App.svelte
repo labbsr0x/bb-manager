@@ -1,6 +1,6 @@
 <!-- App.svelte -->
 <script>
-  import { Router, Link, Route } from "svelte-routing";
+  import { Router, Link, Route, link } from "svelte-routing";
   import Home from "./Home.svelte";
   import Services from './Services.svelte'
   import CreateService from './CreateService.svelte'
@@ -73,8 +73,8 @@ body {
         <div>
           <h3 class="float-md-left mb-0">{process.env.TITLE}</h3>
           <nav class="nav nav-masthead justify-content-center float-md-right">
-            <Link class="nav-link" to="/">Home</Link>
-            <Link class="nav-link" to="apps">Aplicativos</Link>
+            <a href="/" class="nav-link" use:link replace>Home</a>
+            <a href="/apps" class="nav-link" use:link replace>Aplicativos</a>
           </nav>
         </div>
       </header>

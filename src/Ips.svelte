@@ -7,6 +7,8 @@
     let nrFiles = null
     let oldName = null
     let exportData = []
+    let ipTablesClass = 'table-wrapper-scroll-y my-custom-scrollbar collapse show'
+    let editorClass = ''
     
     async function list() {
       try {
@@ -57,7 +59,7 @@
       }
     }
     async function downloadFiles () {
-      document.getElementById('table-ips').classList.remove('show')
+      ipTablesClass = 'collapse'
 
       let copyIps = [...ips]
       for (let i = 0; i < ips.length / nrFiles; i++) {
@@ -67,16 +69,14 @@
                   "labels": {}
               }
           ]
-          const container = document.getElementById(`jsoneditor${i}`)
-          const options = {
-            mode: 'text',
-            mainMenuBar: false
-          }
-          const editor = new JSONEditor(container, options, json)
           copyIps = copyIps.slice(nrFiles)
           exportData[i] = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json));
       }
-      document.getElementById('editor-ips').classList.add('show')
+      editorClass = 'show'
+    }
+    function removeFiles () {
+      ipTablesClass = 'table-wrapper-scroll-y my-custom-scrollbar collapse show'
+      editorClass = ''
     }
     beforeUpdate(() => {
       if (nameApp !== null && nameApp !== '' && oldName !== nameApp) {
@@ -87,9 +87,13 @@
     })
 </script>
 <style>
-div.jsoneditor textarea.jsoneditor-text {
-  background-color: #ffffff;
-  color:  #666666;
+.my-custom-scrollbar {
+position: relative;
+height: 600px;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
 }
 </style>
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -107,23 +111,35 @@ div.jsoneditor textarea.jsoneditor-text {
         <button type="button" on:click={downloadFiles} class="btn btn-info">Gerar</button>
     </div>
 </div>
-<div id="editor-ips" class="collapse">
-  {#each Array(nrFiles) as _, i}
-    <div class="row">
-      <div id="jsoneditor{i}"  style="width: 400px; height: 300px;"></div>
-    </div>
-  {/each}
+<div id="editor-ips" class="collapse {editorClass}">
   {#if exportData}
+    <table class="table table-striped table-sm">
+        <thead>
+        <tr>
+            <th>Arquivos</th>
+        </tr>
+        </thead>
+        <tbody>
+            {#each exportData as data, i}
+            <tr>
+                <td>
+                  <a href={data} download="data_{nameApp}_conjunto_{i}.json">data_{nameApp}_conjunto_{i}.json</a>
+                </td>
+            </tr>
+            {/each}
+            <tr>
+              <td>
+                 <button type="button" on:click={removeFiles} class="btn btn-info">Finalizar arquivos</button>
+              </td>
+            </tr>
+        </tbody>
+    </table>
     <div class="row">
-        {#each exportData as data, i}
-            <div class="col-md-12">
-                Arquivo <a href={data} download="data_{nameApp}_conjunto_{i}.json">data_{nameApp}_conjunto_{i}.json</a>
-            </div>
-        {/each}
+        
     </div>
   {/if}
 </div>
-<div id="table-ips" class="table-responsive collapse show">
+<div id="table-ips" class="table-responsive {ipTablesClass}">
     <table class="table table-striped table-sm">
         <thead>
         <tr>
