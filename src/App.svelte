@@ -37,7 +37,12 @@
             </Row>
           </TopAppBar>
           <div>
-            <svelte:component this={selected}/>
+            <Router url="{url}">
+              <Route path="apps" component="{Services}" />
+              <Route path="ips/:nameApp" component="{Ips}" />
+              <Route path="newApp" component="{CreateService}" />
+              <Route path="/"><Home /></Route>
+            </Router>
           </div>
         </main>
       </AppContent>
@@ -48,7 +53,7 @@
 </section>
 
 <script>
-  import { Router, Link, Route, link } from "svelte-routing";
+  import { Router, Link, Route, link, navigate } from "svelte-routing";
   import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar';
   import IconButton from '@smui/icon-button';
   import Drawer, {AppContent, Content, Header, Scrim} from '@smui/drawer';
@@ -59,6 +64,7 @@
   import Services from './Services.svelte'
   import CreateService from './CreateService.svelte'
   import Ips from './Ips.svelte'
+  export let url = "";
   let clicked = 'nothing yet';
   let myDrawer;
   let myDrawerOpen = false;
@@ -85,8 +91,8 @@
   let selected = Home
   function setActive(menu) {
     console.log('menu', menu)
+    navigate(menu.link, { replace: true });
     active = menu.value;
-    selected = menu.component
     myDrawerOpen = false;
   }
 </script>
