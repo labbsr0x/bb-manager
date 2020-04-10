@@ -1,94 +1,119 @@
 <!-- App.svelte -->
-<script>
-  import { Router, Link, Route, link } from "svelte-routing";
-  import Home from "./Home.svelte";
-  import Services from './Services.svelte'
-  import CreateService from './CreateService.svelte'
-  import Ips from './Ips.svelte'
+<svelte:head>
+  <title>Bb-Manager {process.env.TITLE}</title>
+</svelte:head>
 
-  export let url = "";
-</script>
+<section>
+    <div class="drawer-container">
+      <Drawer variant="dismissible" bind:this={myDrawer} bind:open={myDrawerOpen}>
+        <Header>
+          Menu
+        </Header>
+        <Content>
+          <List>
+            {#each menus as menu, i}
+              <Item href="javascript:void(0)" on:click={() => setActive(menu.value)} activated={active === menu.value}>
+                <Graphic class="material-icons" aria-hidden="true">{menu.icon}</Graphic>
+                <Text>{menu.text}</Text>
+              </Item>
+            {/each}
+          </List>
+        </Content>
+      </Drawer>
 
-<style>
-/*
- * Globals
- */
-
-
-/* Custom default button */
-.btn-secondary,
-.btn-secondary:hover,
-.btn-secondary:focus {
-  color: #333;
-  text-shadow: none; /* Prevent inheritance from `body` */
-}
-
-
-/*
- * Base structure
- */
-
-body {
-  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
-  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
-}
-
-.cover-container {
-  max-width: 60em;
-}
-
-
-/*
- * Header
- */
-
-.nav-masthead .nav-link {
-  padding: .25rem 0;
-  font-weight: 700;
-  color: rgba(255, 255, 255, .5);
-  background-color: transparent;
-  border-bottom: .25rem solid transparent;
-}
-
-.nav-masthead .nav-link:hover,
-.nav-masthead .nav-link:focus {
-  border-bottom-color: rgba(255, 255, 255, .25);
-}
-
-.nav-masthead .nav-link + .nav-link {
-  margin-left: 1rem;
-}
-
-.nav-masthead .active {
-  color: #fff;
-  border-bottom-color: #fff;
-}
-</style>
-
-
-<body class="d-flex h-100 text-center text-white bg-dark">
-  <Router url="{url}">
-    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-      <header class="mb-auto">
-        <div>
-          <h3 class="float-md-left mb-0">{process.env.TITLE}</h3>
-          <nav class="nav nav-masthead justify-content-center float-md-right">
-            <a href="/" class="nav-link" use:link replace>Home</a>
-            <a href="/apps" class="nav-link" use:link replace>Aplicativos</a>
-          </nav>
-        </div>
-      </header>
-
-      <main class="px-3">
+      <AppContent class="app-content">
+        <main class="main-content">
+          <TopAppBar variant="static" color='primary'>
+            <Row>
+              <Section>
+                <IconButton on:click={() => myDrawerOpen = !myDrawerOpen} class="material-icons">menu</IconButton>
+                <Title>{process.env.TITLE}</Title>
+              </Section>
+              <Section align="end" toolbar>
+                <IconButton class="material-icons" aria-label="Download">file_download</IconButton>
+                <IconButton class="material-icons" aria-label="Print this page">print</IconButton>
+                <IconButton class="material-icons" aria-label="Bookmark this page">bookmark</IconButton>
+              </Section>
+            </Row>
+          </TopAppBar>
+        </main>
         <Route path="apps" component="{Services}" />
         <Route path="ips/:nameApp" component="{Ips}" />
         <Route path="newApp" component="{CreateService}" />
         <Route path="/"><Home /></Route>
-      </main>
-
-      <footer class="mt-auto text-white-50">
-        <a href="https://github.com/labbsr0x/big-brother" class="stretched-link">Parte do projeto Big Brother</a>
-      </footer>
+      </AppContent>
     </div>
-  </Router>
-</body>
+  
+
+  
+</section>
+
+<script>
+  import { Router, Link, Route, link } from "svelte-routing";
+  import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar';
+  import IconButton from '@smui/icon-button';
+  import Drawer, {AppContent, Content, Header, Scrim} from '@smui/drawer';
+  import Button, {Label} from '@smui/button';
+  import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
+  import H6 from '@smui/common/H6.svelte';
+  import Home from "./Home.svelte";
+  import Services from './Services.svelte'
+  import CreateService from './CreateService.svelte'
+  import Ips from './Ips.svelte'
+  let clicked = 'nothing yet';
+  let myDrawer;
+  let myDrawerOpen = false;
+  let active = 'Gray Kittens';
+  let myDrawer2;
+  let myDrawer2Open = false;
+  let active2 = 'Inbox';
+  let menus = [
+    {
+      icon: 'home',
+      value: 'home',
+      text: 'Home',
+      link: '/'
+    },
+    {
+      icon: 'apps',
+      value: 'apps',
+      text: 'Aplications',
+      link: '/apps'
+    }
+  ]
+  function setActive(value) {
+    active = value;
+    myDrawerOpen = false;
+  }
+  function setActive2(value) {
+    active2 = value;
+    myDrawer2Open = false;
+  }
+</script>
+
+<style>
+  .drawer-container {
+    position: relative;
+    display: flex;
+    height: 350px;
+    max-width: 100%;
+    overflow: hidden;
+    z-index: 0;
+  }
+  * :global(.mdc-drawer--modal, .mdc-drawer-scrim) {
+    /* This is not needed for a page-wide modal. */
+    position: absolute;
+  }
+  * :global(.app-content) {
+    flex: auto;
+    overflow: auto;
+    position: relative;
+    flex-grow: 1;
+  }
+  .main-content {
+    overflow: auto;
+    padding: 16px;
+    height: 100%;
+    box-sizing: border-box;
+  }
+</style>
