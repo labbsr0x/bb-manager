@@ -45,18 +45,20 @@
         <PrimaryAction>
           <Content class="mdc-typography--body2">
             <h2 class="mdc-typography--headline6" style="margin: 0;">{app.app}</h2>
-            {app.desc}
+            <div class="card-internal">
+              {app.desc}
+            </div>
           </Content>
         </PrimaryAction>
         <Actions>
           <ActionButtons>
-            <Button on:click={listIps(app.app)}>
+            <Button color="secondary" on:click={listIps(app.app)}>
               <Label>Máquinas</Label>
             </Button>
-            <Button on:click={deleteApp(app.app)}>
+            <Button color="secondary" on:click={deleteApp(app.app)}>
               <Label>Versões</Label>
             </Button>
-            <Button on:click={deleteApp(app.app)}>
+            <Button color="secondary" on:click={deleteApp(app.app)}>
               <Label>Excluir</Label>
             </Button>
           </ActionButtons>
@@ -80,5 +82,8 @@
     margin-top: 10px;
     margin-right: 10px;
     margin-bottom: 20px;
+  }
+  .card-internal {
+    margin-top: 8px;
   }
 </style>
