@@ -1,15 +1,20 @@
 <script>
   import { navigate } from "svelte-routing";
+  import Modal from './Modal.svelte';
   import api from './api/'
   let appName = ''
+  let appDesc = ''
+  let open = false
   const createApp = async () => {
     try {
       await api.post('/addApp', {
           name: appName,
+          desc: appDesc,
           address: ''
       })
       navigate(`apps`)
     } catch (err) {
+      open = true
       console.log(`erro`, err)
     }
   }
@@ -28,6 +33,7 @@
         <div class="col-6 offset-3">
           <div class="form-group">
             <input class="form-control" placeholder="Nome da aplicação" id="appName" aria-describedby="appNameHelp" bind:value={appName} />
+            <textarea rows="3" class="form-control" placeholder="Descrição da aplicação" id="appDesc" aria-describedby="appNameHelp" bind:value={appDesc} ></textarea>
           </div>
           <button type="button" on:click={createApp} class="btn btn-info">Salvar</button>
         </div>
@@ -35,3 +41,4 @@
     </div>
   </div>
 </div>
+<Modal title="Erro ao criar app" open="{open}" />
