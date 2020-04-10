@@ -1,4 +1,6 @@
 <script>
+  import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
+  import Button, {Label} from '@smui/button';
   import { navigate } from "svelte-routing";
 	import api from './api/'
 	let apps = []
@@ -36,25 +38,47 @@
   }
 </script>
 
-<div class="row">
+<div style="display: flex; flex-wrap: wrap;">
   {#each apps as app, i}
-    <div class="card col-5 mx-2 my-2 bg-grey">
-      <div class="card-body">
-        <h5 class="card-title" style="color: grey">
-          <span data-feather="home">{app.app}</span>
-        </h5>
-        <div class="card-text row">
-          <span class="col-12" style="color: grey">{app.desc}</span>
-          <div class="col-12 mx-2 my-2">
-            <button class="btn btn-primary" on:click={listIps(app.app)}>Máquinas</button>
-            <button class="btn btn-success" on:click={deleteApp(app.app)}>Versões</button>
-            <button class="btn btn-danger" on:click={deleteApp(app.app)}>Remover</button>
-          </div>
-        </div>
-      </div>
+    <div class="card-container">
+      <Card style="width: 360px;">
+        <PrimaryAction>
+          <Content class="mdc-typography--body2">
+            <h2 class="mdc-typography--headline6" style="margin: 0;">{app.app}</h2>
+            {app.desc}
+          </Content>
+        </PrimaryAction>
+        <Actions>
+          <ActionButtons>
+            <Button on:click={listIps(app.app)}>
+              <Label>Máquinas</Label>
+            </Button>
+            <Button on:click={deleteApp(app.app)}>
+              <Label>Versões</Label>
+            </Button>
+            <Button on:click={deleteApp(app.app)}>
+              <Label>Excluir</Label>
+            </Button>
+          </ActionButtons>
+        </Actions>
+      </Card>
     </div>
   {/each}
 </div>
 <div class="row mt-5">
-  <button type="button" on:click={newApp} class="btn btn-info">Criar nova aplicação</button>
+  <Button type="button" on:click={newApp} class="btn btn-info">
+    <Label>Criar nova aplicação</Label>
+  </Button>
 </div>
+
+<style>
+  .card-container {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 380px;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+  }
+</style>

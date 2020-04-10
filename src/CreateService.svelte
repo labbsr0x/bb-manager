@@ -1,6 +1,5 @@
 <script>
   import { navigate } from "svelte-routing";
-  import Modal from './Modal.svelte';
   import api from './api/'
   let appName = ''
   let appDesc = ''
