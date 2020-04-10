@@ -12,7 +12,7 @@
         <Content>
           <List>
             {#each menus as menu, i}
-              <Item href="javascript:void(0)" on:click={() => setActive(menu.value)} activated={active === menu.value}>
+              <Item href="javascript:void(0)" on:click={() => setActive(menu)} activated={active === menu.value}>
                 <Graphic class="material-icons" aria-hidden="true">{menu.icon}</Graphic>
                 <Text>{menu.text}</Text>
               </Item>
@@ -36,11 +36,10 @@
               </Section>
             </Row>
           </TopAppBar>
+          <div>
+            <svelte:component this={selected}/>
+          </div>
         </main>
-        <Route path="apps" component="{Services}" />
-        <Route path="ips/:nameApp" component="{Ips}" />
-        <Route path="newApp" component="{CreateService}" />
-        <Route path="/"><Home /></Route>
       </AppContent>
     </div>
   
@@ -72,22 +71,23 @@
       icon: 'home',
       value: 'home',
       text: 'Home',
-      link: '/'
+      link: '/',
+      component: Home
     },
     {
       icon: 'apps',
       value: 'apps',
       text: 'Aplications',
-      link: '/apps'
+      link: '/apps',
+      component: Services
     }
   ]
-  function setActive(value) {
-    active = value;
+  let selected = Home
+  function setActive(menu) {
+    console.log('menu', menu)
+    active = menu.value;
+    selected = menu.component
     myDrawerOpen = false;
-  }
-  function setActive2(value) {
-    active2 = value;
-    myDrawer2Open = false;
   }
 </script>
 
