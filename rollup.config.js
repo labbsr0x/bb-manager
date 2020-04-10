@@ -1,6 +1,7 @@
 import svelte from 'rollup-plugin-svelte';
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import postcss from 'rollup-plugin-postcss';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import replace from '@rollup/plugin-replace'
@@ -48,7 +49,8 @@ export default {
 			// enable run-time checks when not in production
 			dev: !production,
 			// we'll extract any component CSS out into
-			// a separate file - better for performance
+      // a separate file - better for performance
+      emitCss: true,
 			css: css => {
 				css.write('public/build/bundle.css');
 			}
@@ -63,7 +65,19 @@ export default {
 			browser: true,
 			dedupe: ['svelte']
 		}),
-		commonjs(),
+    commonjs(),
+    postcss({
+      extract: true,
+      minimize: true,
+      use: [
+        ['sass', {
+          includePaths: [
+            './src/theme',
+            './node_modules'
+          ]
+        }]
+      ]
+    }),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
