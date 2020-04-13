@@ -1,29 +1,34 @@
 <script>
+    import IPList from './machines/IPList.svelte'
+    import FileList from './machines/FileList.svelte'
+    import Button, {Group, GroupItem, Label, Icon} from '@smui/button';
+    import HelperText from '@smui/textfield/helper-text/index';
+    import Textfield from '@smui/textfield'
     import api from './api'
     import { beforeUpdate } from 'svelte';
     export let nameApp = null
+    export let location = ''
     let ips = []
-    let newIp = null
-    let nrFiles = null
+    let newIp = ''
+    let nrFiles = ''
     let oldName = null
     let exportData = []
-    let ipTablesClass = 'table-wrapper-scroll-y my-custom-scrollbar collapse show'
-    let editorClass = ''
     
     async function list() {
       try {
         let response = await api.get(`/listIps/${nameApp}`)
         // console.log(`response ips`, response)
         ips = response.data.result
+        console.log('ips', ips)
       } catch (err) {
         console.log(`erro`, err)
       }
     }
-    async function deleteIp(ip) {
+    async function deleteIp() {
       try {
         await api.post('/remove/ip', {
             app: nameApp,
-            ip: ip
+            ip: event.detail.ip
         })
         await list()
       } catch (err) {
@@ -59,7 +64,6 @@
       }
     }
     async function downloadFiles () {
-      ipTablesClass = 'collapse'
 
       let copyIps = [...ips]
       for (let i = 0; i < ips.length / nrFiles; i++) {
@@ -72,90 +76,35 @@
           copyIps = copyIps.slice(nrFiles)
           exportData[i] = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json));
       }
-      editorClass = 'show'
-    }
-    function removeFiles () {
-      ipTablesClass = 'table-wrapper-scroll-y my-custom-scrollbar collapse show'
-      editorClass = ''
     }
     beforeUpdate(() => {
       if (nameApp !== null && nameApp !== '' && oldName !== nameApp) {
           // console.log(`new name app`, nameApp)
+          console.log('name app', nameApp)
           oldName = nameApp
           list()
       }
     })
 </script>
-<style>
-.my-custom-scrollbar {
-position: relative;
-height: 600px;
-overflow: auto;
-}
-.table-wrapper-scroll-y {
-display: block;
-}
-</style>
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+<div class="row p-3">
     <h1 class="h2">Ips do Aplicativo</h1>
+    <div class="col-md-4">
+        <Textfield bind:value={newIp} label="IP">
+        </Textfield>
+        <HelperText validationMsg>Endereço da máquina a ser adicionada.</HelperText>
+        <Button on:click={addIp} color="secondary">
+          <Icon class="material-icons">add_box</Icon>
+        </Button>
+    </div>
+    <div class="col-md-4">
+        <Textfield bind:value={nrFiles} label="Qtde Ips por arquivo:" />
+        <HelperText validationMsg>Número de máquinas por arquivo.</HelperText>
+        <Button on:click={downloadFiles} color="secondary">
+          <Icon class="material-icons">cloud_download</Icon>
+        </Button>
+    </div>
 </div>
 <div class="row p-3">
-    <div class="col-md-6">
-        <p>Adicionar novo Ip para o app</p>
-        <input bind:value={newIp} />
-        <button type="button" on:click={addIp} class="btn btn-info">Adicionar</button>
-    </div>
-    <div class="col-md-6">
-        <p>Qtde Ips por arquivo: </p>
-        <input bind:value={nrFiles} />
-        <button type="button" on:click={downloadFiles} class="btn btn-info">Gerar</button>
-    </div>
-</div>
-<div id="editor-ips" class="collapse {editorClass}">
-  {#if exportData}
-    <table class="table table-striped table-sm">
-        <thead>
-        <tr>
-            <th>Arquivos</th>
-        </tr>
-        </thead>
-        <tbody>
-            {#each exportData as data, i}
-            <tr>
-                <td>
-                  <a href={data} download="data_{nameApp}_conjunto_{i}.json">data_{nameApp}_conjunto_{i}.json</a>
-                </td>
-            </tr>
-            {/each}
-            <tr>
-              <td>
-                 <button type="button" on:click={removeFiles} class="btn btn-info">Finalizar arquivos</button>
-              </td>
-            </tr>
-        </tbody>
-    </table>
-    <div class="row">
-        
-    </div>
-  {/if}
-</div>
-<div id="table-ips" class="table-responsive {ipTablesClass}">
-    <table class="table table-striped table-sm">
-        <thead>
-        <tr>
-            <th>Ip</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-            {#each ips as ip, i}
-                <tr>
-                <td>{ip}</td>
-                <td>
-                    <button type="button" on:click={deleteIp(ip)} class="btn btn-info">Delete</button>
-                </td>
-                </tr>
-            {/each}
-        </tbody>
-    </table>
+  <FileList files={exportData} nameApp={nameApp} />
+  <IPList ips={ips} on:handleDelete={deleteIp} />
 </div>
