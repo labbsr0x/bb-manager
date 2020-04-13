@@ -40,4 +40,3 @@
     </div>
   </div>
 </div>
-<Modal title="Erro ao criar app" open="{open}" />

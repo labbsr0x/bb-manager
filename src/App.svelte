@@ -37,12 +37,16 @@
             </Row>
           </TopAppBar>
           <div>
-            <Router url="{url}">
-              <Route path="apps" component="{Services}" />
-              <Route path="ips/:nameApp" component="{Ips}" />
-              <Route path="newApp" component="{CreateService}" />
-              <Route path="/"><Home /></Route>
-            </Router>
+            <div class="row">
+              <div class="col-md-5 offset-md-3">
+                <Router url="{url}">
+                  <Route path="apps" component="{Services}" />
+                  <Route path="ips/:nameApp" component="{Ips}" />
+                  <Route path="newApp" component="{CreateService}" />
+                  <Route path="/"><Home /></Route>
+                </Router>
+              </div>
+            </div>
           </div>
         </main>
       </AppContent>
@@ -101,7 +105,7 @@
   .drawer-container {
     position: relative;
     display: flex;
-    height: 350px;
+    height: 900px;
     max-width: 100%;
     overflow: hidden;
     z-index: 0;
@@ -118,7 +122,6 @@
   }
   .main-content {
     overflow: auto;
-    padding: 16px;
     height: 100%;
     box-sizing: border-box;
   }
