@@ -1,22 +1,35 @@
 <script>
+  import Kitchen from '@smui/snackbar/kitchen/index';
   import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
   import Button, {Label} from '@smui/button';
   import { navigate } from "svelte-routing";
 	import api from './api/'
-	let apps = []
-	api.get(`/listApps?descApp=true`).then(response => {
+  let apps = []
+  let kitchen
+	api.get(`/list/apps?descApp=true`).then(response => {
 		// console.log(`response`, response)
 		apps = response.data.result
 	}).catch(error => {
-		console.log(`error`, error)
+    console.debug(`error`, error)
+    kitchen.push({
+      props: {
+        variant: 'stacked'
+      },
+      label: 'Ocorreu um erro na listagem dos aplicativos'
+    })
 	})
 	const updateApps = async () => {
 		try {
-			let response = await api.get('/listApps?descApp=true')
-			console.log(`response on update`, response)
-			apps = response.data.apps
+			let response = await api.get('/list/apps?descApp=true')
+			apps = response.data.result
 		} catch (err) {
-			console.log(`erro`, err)
+      console.debug(`erro`, err)
+      kitchen.push({
+        props: {
+          variant: 'stacked'
+        },
+        label: 'Ocorreu um erro na listagem dos aplicativos'
+      })
 		}
 	}
 	const listIps = async (app) => {
@@ -27,12 +40,24 @@
   }
   const deleteApp = async (app) => {
     try {
-			await api.post('/removeApp', {
+			await api.post('/remove/app', {
         name: app
+      })
+      kitchen.push({
+        props: {
+          variant: 'stacked'
+        },
+        label: 'Aplicativo excluido com sucesso.'
       })
       await updateApps()
 			// console.log(`response on update`, response)
 		} catch (err) {
+      kitchen.push({
+        props: {
+          variant: 'stacked'
+        },
+        label: 'Ocorreu um erro e não foi possível excluir o aplivativo'
+      })
 			console.log(`erro`, err)
 		}
   }
@@ -42,14 +67,12 @@
   {#each apps as app, i}
     <div class="card-container">
       <Card style="width: 360px;">
-        <PrimaryAction>
-          <Content class="mdc-typography--body2">
-            <h2 class="mdc-typography--headline6" style="margin: 0;">{app.app}</h2>
-            <div class="card-internal">
-              {app.desc}
-            </div>
-          </Content>
-        </PrimaryAction>
+        <Content class="mdc-typography--body2">
+          <h2 class="mdc-typography--headline6" style="margin: 0;">{app.app}</h2>
+          <div class="card-internal">
+            {app.desc}
+          </div>
+        </Content>
         <Actions>
           <ActionButtons>
             <Button color="secondary" on:click={listIps(app.app)}>
@@ -72,7 +95,7 @@
     <Label>Criar nova aplicação</Label>
   </Button>
 </div>
-
+<Kitchen bind:this={kitchen} dismiss$class="material-icons" />
 <style>
   .card-container {
     display: inline-flex;

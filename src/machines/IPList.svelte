@@ -18,17 +18,21 @@
     }
 </script>
 <div>
-  Máquinas
-  <List>
-    {#each ips as ip, i}
-      <Item>
-        <Label>{ip}</Label>
-        <Meta>
-          <Button color="secondary" on:click={deleteIp(ip)}>
-            <Graphic class="material-icons">delete</Graphic>
-          </Button>
-        </Meta>
-      </Item>
-    {/each}
-  </List>
+  {#if ips.length}
+    Máquinas
+    <List>
+      {#each ips as ip, i}
+        <Item>
+          <Label>{ip}</Label>
+          <Meta>
+            <Button color="secondary" on:click={deleteIp(ip)}>
+              <Graphic class="material-icons">delete</Graphic>
+            </Button>
+          </Meta>
+        </Item>
+      {/each}
+    </List>
+  {:else}
+    Nenhuma máquina cadastrada
+  {/if}
 </div>

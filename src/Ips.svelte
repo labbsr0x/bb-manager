@@ -3,11 +3,11 @@
     import FileList from './machines/FileList.svelte'
     import Button, {Group, GroupItem, Label, Icon} from '@smui/button';
     import HelperText from '@smui/textfield/helper-text/index';
-    import Textfield from '@smui/textfield'
+    import Textfield, {Input} from '@smui/textfield'
     import api from './api'
     import { beforeUpdate } from 'svelte';
     export let nameApp = null
-    export let location = ''
+    export const location = ''
     let ips = []
     let newIp = ''
     let nrFiles = ''
@@ -16,7 +16,7 @@
     
     async function list() {
       try {
-        let response = await api.get(`/listIps/${nameApp}`)
+        let response = await api.get(`/list/ips/${nameApp}`)
         // console.log(`response ips`, response)
         ips = response.data.result
         console.log('ips', ips)
@@ -24,7 +24,7 @@
         console.log(`erro`, err)
       }
     }
-    async function deleteIp() {
+    async function deleteIp(event) {
       try {
         await api.post('/remove/ip', {
             app: nameApp,
@@ -86,22 +86,25 @@
       }
     })
 </script>
-<div class="row p-3">
-    <h1 class="h2">Ips do Aplicativo</h1>
-    <div class="col-md-4">
-        <Textfield bind:value={newIp} label="IP">
-        </Textfield>
-        <HelperText validationMsg>Endereço da máquina a ser adicionada.</HelperText>
+<h1 class="h2">Ips do Aplicativo</h1>
+<div class="row">
+    <div class="col-md-5">
+      <Textfield label="IP">
+        <Input bind:value={newIp} id="input-manual-c" aria-controls="helper-text-manual-c" aria-describedby="helper-text-manual-c" />
         <Button on:click={addIp} color="secondary">
           <Icon class="material-icons">add_box</Icon>
         </Button>
+      </Textfield>
+      <HelperText id="helper-text-manual-c">Ip da máquina</HelperText>
     </div>
-    <div class="col-md-4">
-        <Textfield bind:value={nrFiles} label="Qtde Ips por arquivo:" />
-        <HelperText validationMsg>Número de máquinas por arquivo.</HelperText>
+    <div class="col-md-5">
+      <Textfield label="IP">
+        <Input bind:value={nrFiles} id="input-manual-a" aria-controls="helper-text-manual-a" aria-describedby="helper-text-manual-a" />
         <Button on:click={downloadFiles} color="secondary">
           <Icon class="material-icons">cloud_download</Icon>
         </Button>
+      </Textfield>
+      <HelperText id="helper-text-manual-a">Número de arquivos</HelperText>
     </div>
 </div>
 <div class="row p-3">
