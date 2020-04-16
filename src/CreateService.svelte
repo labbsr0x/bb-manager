@@ -1,4 +1,10 @@
 <script>
+  import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
+  import Button, {Label} from '@smui/button';
+  import Textfield, {Input, Textarea} from '@smui/textfield'
+  import HelperText from '@smui/textfield/helper-text/index'
+  import FloatingLabel from '@smui/floating-label';
+  import NotchedOutline from '@smui/notched-outline';
   import { navigate } from "svelte-routing";
   import api from './api/'
   let appName = ''
@@ -6,7 +12,7 @@
   let open = false
   const createApp = async () => {
     try {
-      await api.post('/addApp', {
+      await api.post('/add/app', {
           name: appName,
           desc: appDesc,
           address: ''
@@ -17,26 +23,34 @@
       console.log(`erro`, err)
     }
   }
+  const cancel = async () => {
+    navigate(`/`)
+  }
 </script>
 <style>
-.card-app-text {
-  color: black;
-}
-</style>
 
-<div class="row">
-  <div class="card col-11 mx-2 my-2 bg-grey">
-    <div class="card-body">
-      <h5 class="card-title card-app-text">Adicionar nova aplicação</h5>
-      <div class="row">
-        <div class="col-6 offset-3">
-          <div class="form-group">
-            <input class="form-control" placeholder="Nome da aplicação" id="appName" aria-describedby="appNameHelp" bind:value={appName} />
-            <textarea rows="3" class="form-control" placeholder="Descrição da aplicação" id="appDesc" aria-describedby="appNameHelp" bind:value={appDesc} ></textarea>
-          </div>
-          <button type="button" on:click={createApp} class="btn btn-info">Salvar</button>
-        </div>
-      </div>
+</style>
+<Card>
+  <Content class="mdc-typography--body2" style="max-width: 60%;">
+    <h2 class="mdc-typography--headline6" style="margin: 0;">Cadastro de Aplicativos</h2>
+    <div class="row">
+      <Textfield class="col-12" bind:value={appName} label="Nome do aplicativo" />
+      <Textfield class="col-12" textarea>
+        <Textarea bind:value={appDesc} id="input-manual-d" aria-controls="helper-text-manual-d" aria-describedby="helper-text-manual-d" />
+        <NotchedOutline>
+          <FloatingLabel for="input-manual-d">Descrição do aplicativo</FloatingLabel>
+        </NotchedOutline>
+      </Textfield>
     </div>
-  </div>
-</div>
+  </Content>
+  <Actions>
+    <ActionButtons>
+      <Button color="secondary" on:click={cancel}>
+        <Label>Cancelar</Label>
+      </Button>
+      <Button color="secondary" on:click={createApp}>
+        <Label>Salvar</Label>
+      </Button>
+    </ActionButtons>
+  </Actions>
+</Card>
