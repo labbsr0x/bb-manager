@@ -37,6 +37,7 @@
                 <Router url="{url}">
                   <Route path="apps" component="{Services}" />
                   <Route path="ips/:nameApp" component="{Ips}" />
+                  <Route path="versions/:nameApp" component="{Versions}" />
                   <Route path="newApp" component="{CreateService}" />
                   <Route path="/"><Home /></Route>
                 </Router>
@@ -64,6 +65,7 @@
   import Services from './Services.svelte'
   import CreateService from './CreateService.svelte'
   import Ips from './Ips.svelte'
+  import Versions from './Versions.svelte'
   export let url = "";
   let clicked = 'nothing yet';
   let myDrawer;
