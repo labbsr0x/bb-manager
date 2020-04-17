@@ -6,8 +6,8 @@
 <section>
     <div class="drawer-container">
       <Drawer variant="dismissible" bind:this={myDrawer} bind:open={myDrawerOpen}>
-        <Header>
-          Menu
+        <Header style="padding: 0px">
+          <Img style="width: 256px; heigth: inherit;" src="/{process.env.IMG_LOGO}" />
         </Header>
         <Content>
           <List>
@@ -29,16 +29,11 @@
                 <IconButton on:click={() => myDrawerOpen = !myDrawerOpen} class="material-icons">menu</IconButton>
                 <Title>{process.env.TITLE}</Title>
               </Section>
-              <Section align="end" toolbar>
-                <IconButton class="material-icons" aria-label="Download">file_download</IconButton>
-                <IconButton class="material-icons" aria-label="Print this page">print</IconButton>
-                <IconButton class="material-icons" aria-label="Bookmark this page">bookmark</IconButton>
-              </Section>
             </Row>
           </TopAppBar>
           <div>
             <div class="row">
-              <div class="col-md-5 offset-md-3">
+              <div class="col-md-6 offset-md-3">
                 <Router url="{url}">
                   <Route path="apps" component="{Services}" />
                   <Route path="ips/:nameApp" component="{Ips}" />
@@ -64,6 +59,7 @@
   import Button, {Label} from '@smui/button';
   import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
   import H6 from '@smui/common/H6.svelte';
+  import Img from '@smui/common/Img.svelte'
   import Home from "./Home.svelte";
   import Services from './Services.svelte'
   import CreateService from './CreateService.svelte'
@@ -94,7 +90,6 @@
   ]
   let selected = Home
   function setActive(menu) {
-    console.log('menu', menu)
     navigate(menu.link, { replace: true });
     active = menu.value;
     myDrawerOpen = false;
