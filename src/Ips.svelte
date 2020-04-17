@@ -1,6 +1,7 @@
 <script>
     import IPList from './machines/IPList.svelte'
     import FileList from './machines/FileList.svelte'
+    import TitleList from './TitleList.svelte'
     import Button, {Group, GroupItem, Label, Icon} from '@smui/button';
     import HelperText from '@smui/textfield/helper-text/index';
     import Textfield, {Input} from '@smui/textfield'
@@ -86,7 +87,7 @@
       }
     })
 </script>
-<h1 class="h2">Ips do Aplicativo</h1>
+<TitleList title="Ips do Aplicativo" />
 <div class="row">
     <div class="col-md-5">
       <Textfield label="IP">

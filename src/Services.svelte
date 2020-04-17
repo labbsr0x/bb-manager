@@ -35,6 +35,9 @@
 	const listIps = async (app) => {
 		navigate(`ips/${app}`)
   }
+  const listVersions = async (app) => {
+		navigate(`versions/${app}`)
+  }
   const newApp = () => {
     navigate(`newApp`)
   }
@@ -75,13 +78,13 @@
         </Content>
         <Actions>
           <ActionButtons>
-            <Button color="secondary" on:click={listIps(app.app)}>
+            <Button color="primary" on:click={listIps(app.app)}>
               <Label>Máquinas</Label>
             </Button>
-            <Button color="secondary" on:click={deleteApp(app.app)}>
+            <Button color="primary" on:click={listVersions(app.app)}>
               <Label>Versões</Label>
             </Button>
-            <Button color="secondary" on:click={deleteApp(app.app)}>
+            <Button color="primary" on:click={deleteApp(app.app)}>
               <Label>Excluir</Label>
             </Button>
           </ActionButtons>
