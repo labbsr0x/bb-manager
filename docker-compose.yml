@@ -1,0 +1,58 @@
+version: '3.5'
+
+services:
+  bot:
+    image: labbsr0x/bb-bot:latest
+    environment:
+      - ETCD_URLS=http://etcd:2379
+      - TELEGRAM_TOKEN=teste
+      - DEBUG=*
+      - LANGUAGE=en
+    ports:
+      - 3000:3000
+
+  etcd:
+    image: quay.io/coreos/etcd:v3.2.25
+    ports:
+      - 2379:2379
+    environment:
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+
+  # below is defined the example setup for metric consumption by big brother
+
+  example-service:
+    image: labbsr0x/metrics-generator:latest
+    depends_on:
+      - etcd
+    ports:
+      - 32865
+    environment:
+      - COMPONENT_NAME=app2
+      - REGISTRY_SERVICE=app2
+      - REGISTRY_ETCD_URL=http://etcd:2379
+
+  example-service2:
+    image: labbsr0x/metrics-generator:latest
+    depends_on:
+      - etcd
+    ports:
+      - 32865
+    environment:
+      - REGISTRY_SERVICE=app1
+      - COMPONENT_NAME=app1
+      - REGISTRY_ETCD_URL=http://etcd:2379
+  
+  example-bb-promster:
+    image: labbsr0x/bb-promster:latest
+    depends_on:
+      - etcd
+      - example-service
+    ports:
+      - 9091:9090
+    environment:
+      - REGISTRY_SERVICE=promster
+      - REGISTRY_ETCD_BASE=/services
+      - BB_PROMSTER_LEVEL=1
+      - ETCD_URLS=http://etcd:2379
+      - SCRAPE_ETCD_PATH=/services/
