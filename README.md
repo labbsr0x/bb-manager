@@ -4,7 +4,8 @@ A front-end interface to bb-bot api.
 
 # How to Run locally
 
-1. Use docker-compose up to start up the stack needed.
+1. Use docker-compose up to start up the stack needed:
+  ``` docker-compose up ```
 
 2. Install dependecies:
   ``` npm install ```
@@ -13,6 +14,7 @@ A front-end interface to bb-bot api.
   ```bash
    API_URL= point to bb-bot server
    TITLE = main title of page
+   IMG_LOGO = logo on menu
    ```
 
 4. Run project:
