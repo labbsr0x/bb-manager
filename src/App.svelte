@@ -7,7 +7,7 @@
     <div class="drawer-container">
       <Drawer variant="dismissible" bind:this={myDrawer} bind:open={myDrawerOpen}>
         <Header style="padding: 0px">
-          <Img style="width: 256px; heigth: inherit;" src="/{process.env.IMG_LOGO}" />
+          <Img style="width: 256px; heigth: inherit;" src="/default.png" />
         </Header>
         <Content>
           <List>
@@ -27,7 +27,7 @@
             <Row>
               <Section>
                 <IconButton on:click={() => myDrawerOpen = !myDrawerOpen} class="material-icons">menu</IconButton>
-                <Title>{process.env.TITLE}</Title>
+                <Title>{'TITLE' in process.env ? process.env.TITLE : 'Big Brother Manager'}</Title>
               </Section>
             </Row>
           </TopAppBar>
@@ -36,9 +36,11 @@
               <div class="col-md-6 offset-md-3">
                 <Router url="{url}">
                   <Route path="apps" component="{Services}" />
+                  <Route path="settings" component="{Settings}" />
                   <Route path="ips/:nameApp" component="{Ips}" />
                   <Route path="versions/:nameApp" component="{Versions}" />
                   <Route path="newApp" component="{CreateService}" />
+                  <Route path="new/:form" component="{BasicForm}" />
                   <Route path="/"><Home /></Route>
                 </Router>
               </div>
@@ -53,49 +55,58 @@
 </section>
 
 <script>
-  import { Router, Link, Route, link, navigate } from "svelte-routing";
-  import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar';
-  import IconButton from '@smui/icon-button';
-  import Drawer, {AppContent, Content, Header, Scrim} from '@smui/drawer';
-  import Button, {Label} from '@smui/button';
-  import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
-  import H6 from '@smui/common/H6.svelte';
-  import Img from '@smui/common/Img.svelte'
-  import Home from "./Home.svelte";
-  import Services from './Services.svelte'
-  import CreateService from './CreateService.svelte'
-  import Ips from './Ips.svelte'
-  import Versions from './Versions.svelte'
-  export let url = "";
-  let clicked = 'nothing yet';
-  let myDrawer;
-  let myDrawerOpen = false;
-  let active = 'Gray Kittens';
-  let myDrawer2;
-  let myDrawer2Open = false;
-  let active2 = 'Inbox';
-  let menus = [
-    {
-      icon: 'home',
-      value: 'home',
-      text: 'Home',
-      link: '/',
-      component: Home
-    },
-    {
-      icon: 'apps',
-      value: 'apps',
-      text: 'Aplications',
-      link: '/apps',
-      component: Services
-    }
-  ]
-  let selected = Home
-  function setActive(menu) {
-    navigate(menu.link, { replace: true });
-    active = menu.value;
-    myDrawerOpen = false;
-  }
+	import { Router, Link, Route, link, navigate } from "svelte-routing";
+	import TopAppBar, {Row, Section, Title} from '@smui/top-app-bar';
+	import IconButton from '@smui/icon-button';
+	import Drawer, {AppContent, Content, Header, Scrim} from '@smui/drawer';
+	import Button, {Label} from '@smui/button';
+	import List, {Item, Text, Graphic, Separator, Subheader} from '@smui/list';
+	import H6 from '@smui/common/H6.svelte';
+	import Img from '@smui/common/Img.svelte'
+	import Home from "./Home.svelte";
+	import Services from './Services.svelte'
+	import Settings from './Settings.svelte'
+	import BasicForm from './forms/BasicForm.svelte'
+	import CreateService from './CreateService.svelte'
+	import Ips from './Ips.svelte'
+	import Versions from './Versions.svelte'
+	export let url = "";
+	let clicked = 'nothing yet';
+	let myDrawer;
+	let myDrawerOpen = false;
+	let active = 'Gray Kittens';
+	let myDrawer2;
+	let myDrawer2Open = false;
+	let active2 = 'Inbox';
+	let menus = [
+		{
+			icon: 'home',
+			value: 'home',
+			text: 'Home',
+			link: '/',
+			component: Home
+		},
+		{
+			icon: 'apps',
+			value: 'apps',
+			text: 'Aplications',
+			link: '/apps',
+			component: Services
+		},
+		{
+			icon: 'settings',
+			value: 'settings',
+			text: 'Configurações',
+			link: '/settings',
+			component: Services
+		}
+	]
+	let selected = Home
+	function setActive(menu) {
+		navigate(menu.link, { replace: true });
+		active = menu.value;
+		myDrawerOpen = false;
+	}
 </script>
 
 <style>

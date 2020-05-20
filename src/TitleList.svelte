@@ -1,13 +1,13 @@
 <script>
-    import IconButton, {Icon} from '@smui/icon-button';
-    import { navigate } from "svelte-routing";
+	import IconButton, {Icon} from '@smui/icon-button';
+	import { navigate } from "svelte-routing";
 
-    export let title = ''
-    export let url = '/apps'
+	export let title = ''
+	export let url = '/apps'
 
-    const backPage = () => {
-      navigate(url)
-    }
+	const backPage = () => {
+		navigate(url)
+	}
 </script>
 <div>
   <IconButton class="material-icons" on:click={backPage} ripple={false}>arrow_back</IconButton> 

@@ -1,0 +1,31 @@
+{
+  "env": {
+      "es6": true,
+      "node": true
+  },
+  "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly",
+      "__": true,
+      "describe": true,
+      "it": true,
+      "afterEach": true
+  },
+  "overrides": [
+    {
+      "files": ["*.svelte"],
+      "processor": "svelte3/svelte3"
+    }
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+      "svelte3"
+  ],
+  "rules": {
+    "indent": ["error", "tab"],
+    "no-tabs": "off"
+  }
+}
