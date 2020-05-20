@@ -36,9 +36,11 @@
               <div class="col-md-6 offset-md-3">
                 <Router url="{url}">
                   <Route path="apps" component="{Services}" />
+                  <Route path="settings" component="{Settings}" />
                   <Route path="ips/:nameApp" component="{Ips}" />
                   <Route path="versions/:nameApp" component="{Versions}" />
                   <Route path="newApp" component="{CreateService}" />
+                  <Route path="new/:form" component="{BasicForm}" />
                   <Route path="/"><Home /></Route>
                 </Router>
               </div>
@@ -63,6 +65,8 @@
   import Img from '@smui/common/Img.svelte'
   import Home from "./Home.svelte";
   import Services from './Services.svelte'
+  import Settings from './Settings.svelte'
+  import BasicForm from './forms/BasicForm.svelte'
   import CreateService from './CreateService.svelte'
   import Ips from './Ips.svelte'
   import Versions from './Versions.svelte'
@@ -87,6 +91,13 @@
       value: 'apps',
       text: 'Aplications',
       link: '/apps',
+      component: Services
+    },
+    {
+      icon: 'settings',
+      value: 'settings',
+      text: 'Configurações',
+      link: '/settings',
       component: Services
     }
   ]

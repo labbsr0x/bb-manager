@@ -87,25 +87,16 @@
       }
     })
 </script>
-<TitleList title="Ips do Aplicativo" />
+<TitleList title="Máquinas do Aplicativo" />
 <div class="row">
     <div class="col-md-5">
       <Textfield label="IP">
         <Input bind:value={newIp} id="input-manual-c" aria-controls="helper-text-manual-c" aria-describedby="helper-text-manual-c" />
-        <Button on:click={addIp} color="secondary">
+        <Button on:click={addIp} color="primary">
           <Icon class="material-icons">add_box</Icon>
         </Button>
       </Textfield>
       <HelperText id="helper-text-manual-c">Ip da máquina</HelperText>
-    </div>
-    <div class="col-md-5">
-      <Textfield label="IP">
-        <Input bind:value={nrFiles} id="input-manual-a" aria-controls="helper-text-manual-a" aria-describedby="helper-text-manual-a" />
-        <Button on:click={downloadFiles} color="secondary">
-          <Icon class="material-icons">cloud_download</Icon>
-        </Button>
-      </Textfield>
-      <HelperText id="helper-text-manual-a">Número de arquivos</HelperText>
     </div>
 </div>
 <div class="row p-3">

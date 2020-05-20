@@ -4,12 +4,12 @@
   import Button, {Label} from '@smui/button';
   import { navigate } from "svelte-routing";
 	import api from './api/'
-  let apps = []
+  let data = []
   let kitchen
-  const appURL = '/app'
-	api.get(appURL).then(response => {
+  const apiURL = '/settings'
+	api.get(apiURL).then(response => {
 		// console.log(`response`, response)
-		apps = response.data.result
+		data = response.data.result
 	}).catch(error => {
     console.debug(`error`, error)
     kitchen.push({
@@ -19,10 +19,10 @@
       label: 'Ocorreu um erro na listagem dos aplicativos'
     })
 	})
-	const updateApps = async () => {
+	const updateData = async () => {
 		try {
-			let response = await api.get(appURL)
-			apps = response.data.result
+			let response = await api.get(apiURL)
+			data = response.data.result
 		} catch (err) {
       console.debug(`erro`, err)
       kitchen.push({
@@ -33,34 +33,26 @@
       })
 		}
 	}
-	const listIps = async (app) => {
-		navigate(`ips/${app}`)
-  }
-  const listVersions = async (app) => {
-		navigate(`versions/${app}`)
-  }
   const newApp = () => {
-    navigate(`newApp`)
+    navigate(`new/settings`)
   }
-  const deleteApp = async (app) => {
+  const deleteData = async (setting) => {
     try {
-			await api.post('/remove/app', {
-        name: app
-      })
+			await api.delete(`${apiURL}/${setting}`)
       kitchen.push({
         props: {
           variant: 'stacked'
         },
-        label: 'Aplicativo excluido com sucesso.'
+        label: 'Configuração excluida com sucesso.'
       })
-      await updateApps()
+      await updateData()
 			// console.log(`response on update`, response)
 		} catch (err) {
       kitchen.push({
         props: {
           variant: 'stacked'
         },
-        label: 'Ocorreu um erro e não foi possível excluir o aplivativo'
+        label: 'Ocorreu um erro e não foi possível excluir a configuração'
       })
 			console.log(`erro`, err)
 		}
@@ -68,24 +60,15 @@
 </script>
 
 <div style="display: flex; flex-wrap: wrap;">
-  {#each apps as app, i}
+  {#each data as setting, i}
     <div class="card-container">
       <Card style="width: 360px;">
         <Content class="mdc-typography--body2">
-          <h2 class="mdc-typography--headline6" style="margin: 0;">{app._name}</h2>
-          <div class="card-internal">
-            {app._desc}
-          </div>
+          <h2 class="mdc-typography--headline6" style="margin: 0;">{setting._namespace}</h2>
         </Content>
         <Actions>
           <ActionButtons>
-            <Button color="primary" on:click={listIps(app.app)}>
-              <Label>Máquinas</Label>
-            </Button>
-            <Button color="primary" on:click={listVersions(app.app)}>
-              <Label>Versões</Label>
-            </Button>
-            <Button color="primary" on:click={deleteApp(app.app)}>
+            <Button color="primary" on:click={deleteData(setting._namespace)}>
               <Label>Excluir</Label>
             </Button>
           </ActionButtons>
@@ -96,7 +79,7 @@
 </div>
 <div class="row mt-5">
   <Button type="button" on:click={newApp} class="btn btn-info">
-    <Label>Criar nova aplicação</Label>
+    <Label>Criar nova configuração</Label>
   </Button>
 </div>
 <Kitchen bind:this={kitchen} dismiss$class="material-icons" />
