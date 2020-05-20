@@ -1,44 +1,44 @@
 <script>
-  import { onMount } from 'svelte';
-  import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
-  import Button, {Label} from '@smui/button';
-  import { navigate } from "svelte-routing";
-  import SettingsForm from './SettingsForm.svelte'
-  import api from '../api/'
-  export let form = null
-  let dataForm = {}
-  let forms = [
-    {
-      name: 'settings',
-      title: 'Configurações',
-      component: 'SettingsForm',
-      url: '/settings',
-      back: '/settgins'
-    }
-  ]
+	import { onMount } from 'svelte';
+	import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
+	import Button, {Label} from '@smui/button';
+	import { navigate } from "svelte-routing";
+	import SettingsForm from './SettingsForm.svelte'
+	import api from '../api/'
+	export let form = null
+	let dataForm = {}
+	let forms = [
+		{
+			name: 'settings',
+			title: 'Configurações',
+			component: 'SettingsForm',
+			url: '/settings',
+			back: '/settgins'
+		}
+	]
 
-  let selected = {}
+	let selected = {}
 
-  onMount(() => {
-    selected = forms.find(element => element.name === form)
-    if (selected === null || selected === undefined || !Object.keys(selected)) {
-      navigate(`/`)
-    }
-  })
+	onMount(() => {
+		selected = forms.find(element => element.name === form)
+		if (selected === null || selected === undefined || !Object.keys(selected)) {
+			navigate(`/`)
+		}
+	})
 
-  const saveData = async () => {
-    try {
-      console.log('data', dataForm)
-      await api.post(selected.url, dataForm)
-      navigate(`${selected.back}`)
-    } catch (err) {
-      open = true
-      console.log(`erro`, err)
-    }
-  }
-  const cancel = async () => {
-    navigate(`/`)
-  }
+	const saveData = async () => {
+		try {
+			console.log('data', dataForm)
+			await api.post(selected.url, dataForm)
+			navigate(`${selected.back}`)
+		} catch (err) {
+			open = true
+			console.log(`erro`, err)
+		}
+	}
+	const cancel = async () => {
+		navigate(`/`)
+	}
 </script>
 <style>
 

@@ -1,34 +1,33 @@
 <script>
-  import { onMount } from 'svelte';
-  import Textfield from '@smui/textfield'
-  export let data = {}
-  let namespace = ''
-  let template = ''
-  let etcd = ''
-  let remote = ''
-  let image = ''
+	import { onMount } from 'svelte';
+	import Textfield from '@smui/textfield'
+	export let data = {}
+	let namespace = ''
+	let template = ''
+	let etcd = ''
+	let remote = ''
+	let image = ''
 
-  $: {
-    data.namespace = namespace
-    data.template = template
-    data.etcd = etcd
-    data.remote = remote
-    data.image = image
-  }
+	$: {
+		data.namespace = namespace
+		data.template = template
+		data.etcd = etcd
+		data.remote = remote
+		data.image = image
+	}
 
-  onMount(() => {
-    console.log('data', data)
-    if (!Object.keys(data)) {
-      data = {
-        namespace: '',
-        template: '',
-        etcd: '',
-        remote: '',
-        image: ''
-      }
-    }
-    console.log('data after', data)
-  })
+	onMount(() => {
+		console.log('data', data)
+		if (!Object.keys(data)) {
+			data = {
+				namespace: '',
+				template: '',
+				etcd: '',
+				remote: '',
+				image: ''
+			}
+		}
+	})
 </script>
 <style>
 

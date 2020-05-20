@@ -1,70 +1,70 @@
 <script>
-  import Kitchen from '@smui/snackbar/kitchen/index';
-  import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
-  import Button, {Label} from '@smui/button';
-  import { navigate } from "svelte-routing";
+	import Kitchen from '@smui/snackbar/kitchen/index';
+	import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
+	import Button, {Label} from '@smui/button';
+	import { navigate } from "svelte-routing";
 	import api from './api/'
-  let apps = []
-  let kitchen
-  const appURL = '/app'
+	let apps = []
+	let kitchen
+	const appURL = '/app'
 	api.get(appURL).then(response => {
 		// console.log(`response`, response)
 		apps = response.data.result
 	}).catch(error => {
-    console.debug(`error`, error)
-    kitchen.push({
-      props: {
-        variant: 'stacked'
-      },
-      label: 'Ocorreu um erro na listagem dos aplicativos'
-    })
+		console.debug(`error`, error)
+		kitchen.push({
+			props: {
+				variant: 'stacked'
+			},
+			label: 'Ocorreu um erro na listagem dos aplicativos'
+		})
 	})
 	const updateApps = async () => {
 		try {
 			let response = await api.get(appURL)
 			apps = response.data.result
 		} catch (err) {
-      console.debug(`erro`, err)
-      kitchen.push({
-        props: {
-          variant: 'stacked'
-        },
-        label: 'Ocorreu um erro na listagem dos aplicativos'
-      })
+			console.debug(`erro`, err)
+			kitchen.push({
+				props: {
+					variant: 'stacked'
+				},
+				label: 'Ocorreu um erro na listagem dos aplicativos'
+			})
 		}
 	}
 	const listIps = async (app) => {
 		navigate(`ips/${app}`)
-  }
-  const listVersions = async (app) => {
+	}
+	const listVersions = async (app) => {
 		navigate(`versions/${app}`)
-  }
-  const newApp = () => {
-    navigate(`newApp`)
-  }
-  const deleteApp = async (app) => {
-    try {
+	}
+	const newApp = () => {
+		navigate(`newApp`)
+	}
+	const deleteApp = async (app) => {
+		try {
 			await api.post('/remove/app', {
-        name: app
-      })
-      kitchen.push({
-        props: {
-          variant: 'stacked'
-        },
-        label: 'Aplicativo excluido com sucesso.'
-      })
-      await updateApps()
+				name: app
+			})
+			kitchen.push({
+				props: {
+					variant: 'stacked'
+				},
+				label: 'Aplicativo excluido com sucesso.'
+			})
+			await updateApps()
 			// console.log(`response on update`, response)
 		} catch (err) {
-      kitchen.push({
-        props: {
-          variant: 'stacked'
-        },
-        label: 'Ocorreu um erro e não foi possível excluir o aplivativo'
-      })
+			kitchen.push({
+				props: {
+					variant: 'stacked'
+				},
+				label: 'Ocorreu um erro e não foi possível excluir o aplivativo'
+			})
 			console.log(`erro`, err)
 		}
-  }
+	}
 </script>
 
 <div style="display: flex; flex-wrap: wrap;">

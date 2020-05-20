@@ -14,13 +14,17 @@ dotenv.config()
 const fileEnv = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'
 
 // get the env variables from the .env file relative to the current NODE_ENV
-const ENV_VARS = dotenv.parse(fs.readFileSync(path.resolve(__dirname, fileEnv)))
-
+let ENV_VARS = {}
+try {
+	ENV_VARS = dotenv.parse(fs.readFileSync(path.resolve(__dirname, fileEnv)))
+} catch (err) {
+	ENV_VARS = {}
+}
 const valuesEnvToReplace = () => {
-  return Object.entries(ENV_VARS).reduce((acc, [key, val]) => {
-    acc[`process.env.${key}`] = JSON.stringify(val)
-    return acc
-  }, {})
+	return Object.entries(ENV_VARS).reduce((acc, [key, val]) => {
+		acc[`process.env.${key}`] = JSON.stringify(val)
+		return acc
+	}, {})
 }
 
 const production = !process.env.ROLLUP_WATCH;

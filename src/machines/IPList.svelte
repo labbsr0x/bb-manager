@@ -1,21 +1,21 @@
 <script>
-    import { createEventDispatcher } from 'svelte';
-    import List, {Group, Item, Graphic, Meta, Label, Separator, Subheader, Text, PrimaryText, SecondaryText} from '@smui/list';
-    import Button from '@smui/button';
-    import api from '../api'
-    export let ips;
+	import { createEventDispatcher } from 'svelte';
+	import List, {Group, Item, Graphic, Meta, Label, Separator, Subheader, Text, PrimaryText, SecondaryText} from '@smui/list';
+	import Button from '@smui/button';
+	import api from '../api'
+	export let ips;
 
-    const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 
-    async function deleteIp(ip) {
-      try {
-        dispatch('handleDelete', {
-          ip: ip
-        });
-      } catch (err) {
-        console.log(`erro`, err)
-      }
-    }
+	async function deleteIp(ip) {
+		try {
+			dispatch('handleDelete', {
+				ip: ip
+			});
+		} catch (err) {
+			console.log(`erro`, err)
+		}
+	}
 </script>
 <div>
   {#if ips.length}

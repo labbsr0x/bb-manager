@@ -13,7 +13,6 @@ A front-end interface to bb-bot api.
   ```bash
    API_URL= point to bb-bot server
    TITLE = main title of page
-   IMG_LOGO = logo on menu
    ```
 
 4. Run project:
