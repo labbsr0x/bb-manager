@@ -40,7 +40,7 @@
 		navigate(`versions/${app}`)
 	}
 	const newApp = () => {
-		navigate(`newApp`)
+		navigate(`new/app`)
 	}
 	const deleteApp = async (app) => {
 		try {
@@ -79,13 +79,13 @@
         </Content>
         <Actions>
           <ActionButtons>
-            <Button color="primary" on:click={listIps(app.app)}>
+            <Button color="primary" on:click={listIps(app._name)}>
               <Label>Máquinas</Label>
             </Button>
-            <Button color="primary" on:click={listVersions(app.app)}>
+            <Button color="primary" on:click={listVersions(app._name)}>
               <Label>Versões</Label>
             </Button>
-            <Button color="primary" on:click={deleteApp(app.app)}>
+            <Button color="primary" on:click={deleteApp(app._name)}>
               <Label>Excluir</Label>
             </Button>
           </ActionButtons>

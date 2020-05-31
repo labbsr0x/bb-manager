@@ -39,7 +39,6 @@
                   <Route path="settings" component="{Settings}" />
                   <Route path="ips/:nameApp" component="{Ips}" />
                   <Route path="versions/:nameApp" component="{Versions}" />
-                  <Route path="newApp" component="{CreateService}" />
                   <Route path="new/:form" component="{BasicForm}" />
                   <Route path="/"><Home /></Route>
                 </Router>
@@ -67,7 +66,6 @@
 	import Services from './Services.svelte'
 	import Settings from './Settings.svelte'
 	import BasicForm from './forms/BasicForm.svelte'
-	import CreateService from './CreateService.svelte'
 	import Ips from './Ips.svelte'
 	import Versions from './Versions.svelte'
 	export let url = "";

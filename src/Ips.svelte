@@ -17,9 +17,9 @@
 
 	async function list() {
 		try {
-			let response = await api.get(`/list/ips/${nameApp}`)
+			let response = await api.get(`/app/${nameApp}`)
 			// console.log(`response ips`, response)
-			ips = response.data.result
+			ips = response.data.result._ips
 			console.log('ips', ips)
 		} catch (err) {
 			console.log(`erro`, err)
@@ -27,9 +27,9 @@
 	}
 	async function deleteIp(event) {
 		try {
-			await api.post('/remove/ip', {
-				app: nameApp,
-				ip: event.detail.ip
+			await api.delete('/app/ip', {
+				name: nameApp,
+				ips: event.detail.ip
 			})
 			await list()
 		} catch (err) {
@@ -46,15 +46,15 @@
 				// console.log(`has ips`, hasIps)
 				let response = null
 				if (hasIps.length > 1) {
-					let requests = hasIps.map(i => api.post('/add/ip', {
-						app: nameApp,
-						ip: i
+					let requests = hasIps.map(i => api.patch('/app/ip', {
+						name: nameApp,
+						ips: i
 					}))
 					response = await Promise.all(requests)
 				} else {
-					response = await api.post('/add/ip', {
-						app: nameApp,
-						ip: newIp
+					response = await api.patch('/app/ip', {
+						name: nameApp,
+						ips: newIp
 					})
 				}
 				newIp = ''
