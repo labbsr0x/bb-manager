@@ -22,10 +22,9 @@
 
 	async function list() {
 		try {
-			let response = await api.get(`/app/${nameApp}`)
+			let response = await api.get(`/app?name=${nameApp}`)
 			// console.log(`response ips`, response)
 			ips = response.data.result._ips
-			console.log('ips', ips)
 		} catch (err) {
 			console.log(`erro`, err)
 		}
