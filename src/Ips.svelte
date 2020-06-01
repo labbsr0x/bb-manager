@@ -5,15 +5,20 @@
 	import Button, {Group, GroupItem, Label, Icon} from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text/index';
 	import Textfield, {Input} from '@smui/textfield'
+	import { appName } from './store/app.js';
 	import api from './api'
 	import { beforeUpdate } from 'svelte';
-	export let nameApp = null
 	export const location = ''
+	let nameApp;
 	let ips = []
 	let newIp = ''
 	let nrFiles = ''
 	let oldName = null
 	let exportData = []
+
+	const unsubscribe = appName.subscribe(value => {
+		nameApp = value;
+	})
 
 	async function list() {
 		try {

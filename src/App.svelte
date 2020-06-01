@@ -37,7 +37,7 @@
                 <Router url="{url}">
                   <Route path="apps" component="{Services}" />
                   <Route path="settings" component="{Settings}" />
-                  <Route path="ips/:nameApp" component="{Ips}" />
+                  <Route path="ips" component="{Ips}" />
                   <Route path="versions/:nameApp" component="{Versions}" />
                   <Route path="new/:form" component="{BasicForm}" />
                   <Route path="/"><Home /></Route>

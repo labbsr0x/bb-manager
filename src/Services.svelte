@@ -3,6 +3,7 @@
 	import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
 	import Button, {Label} from '@smui/button';
 	import { navigate } from "svelte-routing";
+	import { appName } from './store/app.js';
 	import api from './api/'
 	let apps = []
 	let kitchen
@@ -34,7 +35,8 @@
 		}
 	}
 	const listIps = async (app) => {
-		navigate(`ips/${app}`)
+		appName.update(t => app)
+		navigate(`ips`)
 	}
 	const listVersions = async (app) => {
 		navigate(`versions/${app}`)
