@@ -48,6 +48,7 @@
 				let hasIps = newIp.split(",").map(o => o.replace(/\"/g, ""))
 				hasIps = hasIps.filter(i => i !== "" && i !== null && i !== undefined)
 				// console.log(`has ips`, hasIps)
+				console.log("nameApp", nameApp)
 				let response = null
 				if (hasIps.length > 1) {
 					let requests = hasIps.map(i => api.patch('/app/ip', {
