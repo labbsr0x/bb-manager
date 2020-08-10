@@ -30,23 +30,28 @@
 				let responseSettings = await api.get(`/settings/${fullApp._namespace}`)
 				settings = responseSettings.data.result
 			}
+			let basicName = fullApp._name.replace('/services', '').split('-')
+			basicName.shift()
+			basicName = basicName.join('-')
+			const envApp = fullApp._name.replace('/services', '').split('-')[1]
 			text = `
-${fullApp._name.replace('/services', '')}:
-	generator:
-		deploy: false
-		service: ${fullApp._name.replace('/services', '')}
+${basicName}:
+  generator:
+    deploy: false
+	service: ${fullApp._name.replace('/services', '')}
 
-	promster:
-		image: ${settings._dockerImage}
-		tag: ${settings._dockerTag}
-		prefix: pil
-		deploy: true
-		scrapePaths: ${fullApp._scrapePath.join()}
-		scheme: ${fullApp._scheme}
-		tls: ${fullApp._tls ? "true" : "false"}
-		ingress: 
-			enabled: true
-			`
+  promster:
+	image: ${settings._dockerImage}
+	tag: ${settings._dockerTag}
+	prefix: ${envApp}
+	deploy: true
+	scrapePaths: ${fullApp._scrapePath.join()}
+	scheme: ${fullApp._scheme}
+	tls: ${fullApp._tls ? "true" : "false"}
+	ingress: 
+		enabled: true
+		hostname: ${basicName}-promster.ath.desenv.bb.com.br
+		`
 		} catch (err) {
 			console.log(`erro`, err)
 		}
@@ -62,6 +67,9 @@ ${fullApp._name.replace('/services', '')}:
 		} catch (err) {
 			console.log(`erro`, err)
 		}
+	}
+	const copyToClipBoard = () => {
+		document.execCommand("copy")
 	}
 	beforeUpdate(() => {
 		if (nameApp !== null && nameApp !== '' && oldName !== nameApp) {
@@ -80,9 +88,6 @@ ${fullApp._name.replace('/services', '')}:
 		</Textfield>
 		<HelperText id="helper-text-manual-d">Values text</HelperText>
     </div>
-    <IconButton color="primary" on:click={deployKB(nameApp)}>
-		<Icon class="material-icons">input</Icon>
-	</IconButton>
 </div>
 <div class="row p-3">
 	{#if exportData}
