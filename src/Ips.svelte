@@ -31,10 +31,12 @@
 	}
 	async function deleteIp(event) {
 		try {
-			await api.delete('/app/ip', {
-				name: nameApp,
-				ips: event.detail.ip
-			})
+			console.log('app', nameApp, 'ip', event.detail.ip)
+			// await api.post('/app/ip', {
+			// 	name: nameApp,
+			//	ips: event.detail.ip
+			// })
+			api.delete(`/app/ip?name=${nameApp}&ips=${event.detail.ip}`)
 			await list()
 		} catch (err) {
 			console.log(`erro`, err)

@@ -55,9 +55,7 @@
 
 	const deleteApp = async (app) => {
 		try {
-			await api.delete(`/app?name=${app}`, {
-				name: app
-			})
+			await api.delete(`/app?name=${app}`)
 			kitchen.push({
 				props: {
 					variant: 'stacked'
