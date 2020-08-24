@@ -2,7 +2,9 @@
 	import Kitchen from '@smui/snackbar/kitchen/index';
 	import Card, {Content, PrimaryAction, Media, MediaContent, Actions, ActionButtons, ActionIcons} from '@smui/card';
 	import Button, {Label} from '@smui/button';
+	import IconButton, {Icon} from '@smui/icon-button';
 	import { navigate } from "svelte-routing";
+	import { appName } from './store/app.js';
 	import api from './api/'
 	let apps = []
 	let kitchen
@@ -34,19 +36,26 @@
 		}
 	}
 	const listIps = async (app) => {
-		navigate(`ips/${app}`)
+		appName.update(t => app)
+		navigate(`ips`)
 	}
 	const listVersions = async (app) => {
 		navigate(`versions/${app}`)
 	}
 	const newApp = () => {
-		navigate(`newApp`)
+		navigate(`new/app`)
 	}
+	const editApp = (app) => {
+		navigate(`edit/app`)
+	}
+	const deployPage = (app) => {
+		appName.update(t => app)
+		navigate(`deploy/app`)
+	}
+
 	const deleteApp = async (app) => {
 		try {
-			await api.post('/remove/app', {
-				name: app
-			})
+			await api.delete(`/app?name=${app}`)
 			kitchen.push({
 				props: {
 					variant: 'stacked'
@@ -79,15 +88,21 @@
         </Content>
         <Actions>
           <ActionButtons>
-            <Button color="primary" on:click={listIps(app.app)}>
-              <Label>Máquinas</Label>
-            </Button>
-            <Button color="primary" on:click={listVersions(app.app)}>
-              <Label>Versões</Label>
-            </Button>
-            <Button color="primary" on:click={deleteApp(app.app)}>
-              <Label>Excluir</Label>
-            </Button>
+            <IconButton color="primary" on:click={listIps(app._name)}>
+							<Icon class="material-icons">computer</Icon>
+            </IconButton>
+            <IconButton color="primary" on:click={listVersions(app._name)}>
+							<Icon class="material-icons">history</Icon>
+            </IconButton>
+						<IconButton color="primary" on:click={editApp(app._name)}>
+              <Icon class="material-icons">edit</Icon>
+            </IconButton>
+            <IconButton color="primary" on:click={deleteApp(app._name)}>
+							<Icon class="material-icons">remove_circle</Icon>
+            </IconButton>
+						<IconButton color="primary" on:click={deployPage(app._name)}>
+							<Icon class="material-icons">restore_page</Icon>
+            </IconButton>
           </ActionButtons>
         </Actions>
       </Card>

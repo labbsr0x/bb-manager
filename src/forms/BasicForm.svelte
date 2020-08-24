@@ -4,6 +4,7 @@
 	import Button, {Label} from '@smui/button';
 	import { navigate } from "svelte-routing";
 	import SettingsForm from './SettingsForm.svelte'
+	import AppForm from './AppForm.svelte'
 	import api from '../api/'
 	export let form = null
 	let dataForm = {}
@@ -14,13 +15,22 @@
 			component: 'SettingsForm',
 			url: '/settings',
 			back: '/settgins'
+		},
+		{
+			name: 'app',
+			title: 'Aplicações',
+			component: 'AppForm',
+			url: '/app',
+			back: '/apps'
 		}
 	]
 
 	let selected = {}
 
+	console.log('passou aqui', form)
 	onMount(() => {
 		selected = forms.find(element => element.name === form)
+		console.log('selected', selected, form)
 		if (selected === null || selected === undefined || !Object.keys(selected)) {
 			navigate(`/`)
 		}
@@ -49,6 +59,8 @@
     <div class="row">
       {#if form === 'settings'}
         <SettingsForm data={dataForm} />
+			{:else if form === 'app'}
+				<AppForm data={dataForm} />
       {/if}
     </div>
   </Content>
