@@ -21,6 +21,10 @@
 	let scheme = ''
 	let tls = false
 	let allSettings = []
+	let level = 1
+	let levels = [
+		1, 2, 3, 4
+	];
 
 	$: {
 		data.namespace = namespace
@@ -30,7 +34,7 @@
 		data.ips = ips
 		data.scheme = scheme
 		data.tls = tls
-
+		data.level = level
 	}
 
 	let deletePath = (path) => {
@@ -71,7 +75,8 @@
 				scrapePath: [],
 				ips: [],
 				scheme: '',
-				tls: false
+				tls: false,
+				level: 1
 			}
 		}
 	})
@@ -82,6 +87,12 @@
 </style>
 <div class="row">
 	<Textfield bind:value={name} label="Nome do aplicativo" />
+	<Select bind:value={level} label="Nível">
+		<Option value={level}></Option>
+		{#each levels as level}
+			<Option value={level} selected={level}>{level}</Option>
+		{/each}
+	</Select>
 	<Select bind:value={namespace} label="Settings">
 		<Option value=""></Option>
 		{#each allSettings as setting}
