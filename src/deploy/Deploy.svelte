@@ -14,6 +14,7 @@
 	let oldName = null
 	let exportData = null
 	let text = ''
+	let requirements = ''
 
 
 	const unsubscribe = appName.subscribe(value => {
@@ -37,13 +38,13 @@
 			text = `
 ${basicName}:
   generator:
-    deploy: false
+	deploy: false
 	service: ${fullApp._name.replace('/services', '')}
 
   promster:
 	image: ${settings._dockerImage}
 	tag: ${settings._dockerTag}
-	prefix: ${envApp}
+	prefix: ${fullApp._name.replace('/services', '')}
 	deploy: true
 	scrapePaths: ${fullApp._scrapePath.join()}
 	scheme: ${fullApp._scheme}
@@ -52,6 +53,12 @@ ${basicName}:
 		enabled: true
 		hostname: ${basicName}-promster.ath.desenv.bb.com.br
 		`
+			requirements = `
+- name: big-brother
+  version: 0.1.11
+  alias: ${basicName}
+  repository: https://chartmuseum.devops.nuvem.bb.com.br/bb/ath
+`
 		} catch (err) {
 			console.log(`erro`, err)
 		}
@@ -82,11 +89,17 @@ ${basicName}:
 </script>
 <TitleList title="Deploy Prometheus" />
 <div class="row">
+	<div>Values.yaml</div>
 	<div class="margins">
 		<Textfield textarea fullwidth input$aria-controls="helper-text-fullwidth-textarea" >
-			<Textarea bind:value={text} rows="14" id="input-manual-d" aria-controls="helper-text-manual-d" aria-describedby="helper-text-manual-d" />
+			<Textarea bind:value={text} rows="20" id="input-manual-d" aria-controls="helper-text-manual-d" aria-describedby="helper-text-manual-d" />
 		</Textfield>
-		<HelperText id="helper-text-manual-d">Values text</HelperText>
+	</div>
+	<div>Requeriments.yaml</div>
+	<div class="margins">
+		<Textfield textarea fullwidth input$aria-controls="helper-text-fullwidth-textarea" >
+			<Textarea bind:value={requirements} rows="10" id="input-manual-d" />
+		</Textfield>
     </div>
 </div>
 <div class="row p-3">
