@@ -18,9 +18,10 @@
 	let scrapePath = []
 	let auxScrapePath = ''
 	let ips = []
-	let scheme = ''
+	let scheme = 'http'
 	let tls = false
-	let allSettings = []
+let allSettings = []
+let schemes = ['https', 'http']
 	let level = 1
 	let levels = [
 		1, 2, 3, 4
@@ -47,10 +48,8 @@
 
 	let addPath = () => {
 		const index = scrapePath.indexOf(auxScrapePath)
-		console.log('index', index)
 		if (index === -1) {
 			scrapePath = [...scrapePath, auxScrapePath]
-			console.log('scrape path', scrapePath)
 			auxScrapePath = ''
 		}
 	}
@@ -83,54 +82,85 @@
 	
 </script>
 <style>
-
+  .component {
+    margin: 12px;
+  }
+  * :global(select, .demo-select-width) {
+    min-width: 200px;
+    width: 100%;
+  }
 </style>
 <div class="row">
-	<Textfield bind:value={name} label="Nome do aplicativo" />
-	<Select bind:value={level} label="Nível">
-		<Option value={level}></Option>
-		{#each levels as level}
-			<Option value={level} selected={level}>{level}</Option>
-		{/each}
-	</Select>
-	<Select bind:value={namespace} label="Settings">
-		<Option value=""></Option>
-		{#each allSettings as setting}
-			<Option value={setting} selected={namespace === setting}>{setting}</Option>
-		{/each}
-	</Select>
-	<Textfield bind:value={scheme} label="Scheme" />
-	<FormField>
-		<Switch bind:checked={tls} />
-		<span slot="label">Tls</span>
-    </FormField>
-	<Textfield textarea>
-		<Textarea bind:value={desc} id="input-manual-d" aria-controls="helper-text-manual-d" aria-describedby="helper-text-manual-d" />
-		<NotchedOutline>
-			<FloatingLabel for="input-manual-d">Descrição do aplicativo</FloatingLabel>
-		</NotchedOutline>
-	</Textfield>
-	<Textfield label="Scrape Paths">
-		<Input bind:value={auxScrapePath} id="input-manual-c" aria-controls="helper-text-manual-c" aria-describedby="helper-text-manual-c" />
-		<Button on:click={addPath} color="primary">
-			<Icon class="material-icons">add_box</Icon>
-		</Button>
-	</Textfield>
-	{#if scrapePath.length}
-    Urls de scrape: 
-    <List>
-      {#each scrapePath as scrape, i}
-        <Item>
-          <Label>{scrape}</Label>
-          <Meta>
-            <Button color="secondary" on:click={deletePath(scrape)}>
-              <Graphic class="material-icons">delete</Graphic>
-            </Button>
-          </Meta>
-        </Item>
+  <div class="col-12 component">
+	  <Textfield fullwidth bind:value={name} label="Nome do aplicativo" />
+  </div>
+  <div class="col-12 component">
+    <Select class="demo-select-width" bind:value={level} label="Nível"  menu$class="demo-select-width">
+      <Option value=""></Option>
+      {#each levels as l}
+        <Option value={l} selected={l === level}>{l}</Option>
       {/each}
-    </List>
-  {:else}
-    Nenhuma url cadastrada
-  {/if}
+    </Select>
+  </div>
+  <div class="col-12 component">
+    <Select class="demo-select-width" bind:value={namespace} label="Settings" menu$class="demo-select-width">
+      <Option value=""></Option>
+      {#each allSettings as setting}
+        <Option value={setting} selected={namespace === setting}>{setting}</Option>
+      {/each}
+    </Select>
+  </div>
+  <div class="col-12 component">
+    <Select class="demo-select-width" bind:value={scheme} label="Scheme" menu$class="demo-select-width">
+      <Option value=""></Option>
+      {#each schemes as schem}
+        <Option value={schem} selected={schem === scheme}>{schem}</Option>
+      {/each}
+    </Select>
+  </div>
+  <div class="col-12 component">
+    <FormField>
+      <Switch bind:checked={tls} />
+      <span slot="label">Tls</span>
+    </FormField>
+  </div>
+  <div class="col-12 component">
+    <Textfield fullwidth textarea>
+      <Textarea bind:value={desc} id="input-manual-d" aria-controls="helper-text-manual-d" aria-describedby="helper-text-manual-d" />
+      <NotchedOutline>
+        <FloatingLabel for="input-manual-d">Descrição do aplicativo</FloatingLabel>
+      </NotchedOutline>
+    </Textfield>
+  </div>
+  <div class="col-12 component">
+    <div class="row">
+      <Textfield label="Scrape Paths">
+        <Input bind:value={auxScrapePath} id="input-manual-c" aria-controls="helper-text-manual-c" aria-describedby="helper-text-manual-c" />
+        <Button on:click={addPath} color="primary">
+          <Icon class="material-icons">add_box</Icon>
+        </Button>
+      </Textfield>
+    </div>
+    <div class="row component">
+      <p>
+        Urls de scrape:
+      </p> 
+      {#if scrapePath.length}
+        <List>
+          {#each scrapePath as scrape, i}
+            <Item>
+              <Label>{scrape}</Label>
+              <Meta>
+                <Button color="secondary" on:click={deletePath(scrape)}>
+                  <Graphic class="material-icons">delete</Graphic>
+                </Button>
+              </Meta>
+            </Item>
+          {/each}
+        </List>
+      {:else}
+        Nenhuma url cadastrada
+      {/if}
+    </div>
+  </div>
 </div>

@@ -14,7 +14,7 @@
 			title: 'Configurações',
 			component: 'SettingsForm',
 			url: '/settings',
-			back: '/settgins'
+			back: '/settings'
 		},
 		{
 			name: 'app',

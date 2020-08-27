@@ -75,7 +75,11 @@
 		}
 	}
 </script>
-
+<div class="row mt-5">
+  <Button type="button" on:click={newApp} class="btn btn-info">
+    <Label>Criar nova aplicação</Label>
+  </Button>
+</div>
 <div style="display: flex; flex-wrap: wrap;">
   {#each apps as app, i}
     <div class="card-container">
@@ -108,11 +112,6 @@
       </Card>
     </div>
   {/each}
-</div>
-<div class="row mt-5">
-  <Button type="button" on:click={newApp} class="btn btn-info">
-    <Label>Criar nova aplicação</Label>
-  </Button>
 </div>
 <Kitchen bind:this={kitchen} dismiss$class="material-icons" />
 <style>
