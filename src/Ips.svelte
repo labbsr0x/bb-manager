@@ -96,8 +96,8 @@
 </script>
 <TitleList title="Máquinas do Aplicativo" />
 <div class="row">
-    <div class="col-md-5">
-      <Textfield label="IP">
+    <div class="col-8">
+      <Textfield  label="IP">
         <Input bind:value={newIp} id="input-manual-c" aria-controls="helper-text-manual-c" aria-describedby="helper-text-manual-c" />
         <Button on:click={addIp} color="primary">
           <Icon class="material-icons">add_box</Icon>
@@ -110,3 +110,8 @@
   <FileList files={exportData} nameApp={nameApp} />
   <IPList ips={ips} on:handleDelete={deleteIp} />
 </div>
+<style>
+* :global(select, .mdc-text-field__input ) {
+    min-width: 400px;
+  }
+</style>

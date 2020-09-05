@@ -36,6 +36,7 @@
               <div class="col-md-6 offset-md-3">
                 <Router url="{url}">
                   <Route path="apps" component="{Services}" />
+                  <Route path="edit/:form" component="{BasicForm}" />
                   <Route path="settings" component="{Settings}" />
                   <Route path="ips" component="{Ips}" />
                   <Route path="versions/:nameApp" component="{Versions}" />
@@ -89,7 +90,7 @@
 		{
 			icon: 'apps',
 			value: 'apps',
-			text: 'Aplications',
+			text: 'Aplicações',
 			link: '/apps',
 			component: Services
 		},

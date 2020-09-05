@@ -5,6 +5,7 @@
 	import IconButton, {Icon} from '@smui/icon-button';
 	import { navigate } from "svelte-routing";
 	import { appName } from './store/app.js';
+	import { dataId } from './store/form.js';
 	import api from './api/'
 	let apps = []
 	let kitchen
@@ -46,6 +47,8 @@
 		navigate(`new/app`)
 	}
 	const editApp = (app) => {
+		console.log('edit app', app)
+		dataId.update(t => app)
 		navigate(`edit/app`)
 	}
 	const deployPage = (app) => {
