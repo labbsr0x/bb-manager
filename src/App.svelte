@@ -27,7 +27,7 @@
             <Row>
               <Section>
                 <IconButton on:click={() => myDrawerOpen = !myDrawerOpen} class="material-icons">menu</IconButton>
-                <Title>{'TITLE' in process.env ? process.env.TITLE : 'Big Brother Manager'}</Title>
+                <Title>{'BB_MANAGER_TITLE' in process.env ? process.env.BB_MANAGER_TITLE : 'Big Brother Manager'}</Title>
               </Section>
             </Row>
           </TopAppBar>

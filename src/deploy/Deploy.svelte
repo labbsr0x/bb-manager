@@ -51,11 +51,11 @@ ${basicName}:
 	tls: ${fullApp._tls ? "true" : "false"}
 	ingress: 
 		enabled: true
-		hostname: ${basicName}-promster.ath.desenv.bb.com.br
+		hostname: ${basicName}-promster.${process.env.BB_MANAGER_DNS_EXTENSION}
 		`
 			requirements = `
 - name: big-brother
-  version: 0.1.11
+  version: ${process.env.BB_MANAGER_CHART_VERSION}
   alias: ${basicName}
   repository: https://chartmuseum.devops.nuvem.bb.com.br/bb/ath
 `

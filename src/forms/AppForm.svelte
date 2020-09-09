@@ -67,7 +67,8 @@ let schemes = ['https', 'http']
 	beforeUpdate(() => {
 		console.log('teste')
 	})
-	onMount(() => {
+	onMount(async () => {
+		await listSettings()
 		console.log('data on app form on mount', data)
 		if (!Object.keys(data)) {
 			data = {
@@ -91,7 +92,6 @@ let schemes = ['https', 'http']
 			level = data._level || data.level
 		}
 		
-		listSettings()
 		console.log('data on app form on mount', data)
 	})
 	

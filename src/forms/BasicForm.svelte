@@ -86,7 +86,7 @@
 		}
 	}
 	const cancel = async () => {
-		navigate(`/`)
+		navigate(`${selected.back}`)
 	}
 </script>
 <style>

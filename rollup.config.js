@@ -11,8 +11,7 @@ import path from 'path'
 
 dotenv.config()
 
-const fileEnv = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'
-
+const fileEnv = '.env'
 // get the env variables from the .env file relative to the current NODE_ENV
 let ENV_VARS = {}
 try {
