@@ -11,8 +11,7 @@ import path from 'path'
 
 dotenv.config()
 
-const fileEnv = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'
-
+const fileEnv = '.env'
 // get the env variables from the .env file relative to the current NODE_ENV
 let ENV_VARS = {}
 try {
@@ -42,9 +41,13 @@ export default {
 		replace({
 			process: JSON.stringify({
 				env: {
-					teste: "Testando",
-					TITLE: 'TITLE' in ENV_VARS ? ENV_VARS.TITLE : process.env.TITLE,
-					API_URL: 'API_URL' in ENV_VARS ? ENV_VARS.API_URL : process.env.API_URL
+					BB_MANAGER_TITLE: 'BB_MANAGER_TITLE' in ENV_VARS ? ENV_VARS.BB_MANAGER_TITLE : process.env.BB_MANAGER_TITLE,
+					BB_MANAGER_API_URL: 'BB_MANAGER_API_URL' in ENV_VARS ? ENV_VARS.BB_MANAGER_API_URL : process.env.BB_MANAGER_API_URL,
+					BB_MANAGER_DNS_EXTENSION: 'BB_MANAGER_DNS_EXTENSION' in ENV_VARS ? ENV_VARS.BB_MANAGER_DNS_EXTENSION : process.env.BB_MANAGER_DNS_EXTENSION,
+					BB_MANAGER_CHART_VERSION: 'BB_MANAGER_CHART_VERSION' in ENV_VARS ? ENV_VARS.BB_MANAGER_CHART_VERSION : process.env.BB_MANAGER_CHART_VERSION,
+					BB_MANAGER_CHART_URL: 'BB_MANAGER_CHART_URL' in ENV_VARS ? ENV_VARS.BB_MANAGER_CHART_URL : process.env.BB_MANAGER_CHART_URL,
+					BB_MANAGER_AUTH_USER: 'BB_MANAGER_AUTH_USER' in ENV_VARS ? ENV_VARS.BB_MANAGER_AUTH_USER : process.env.BB_MANAGER_AUTH_USER,
+					BB_MANAGER_AUTH_USER_PASSWORD: 'BB_MANAGER_AUTH_USER_PASSWORD' in ENV_VARS ? ENV_VARS.BB_MANAGER_AUTH_USER_PASSWORD : process.env.BB_MANAGER_AUTH_USER_PASSWORD,
 				}
 			}),
 			...valuesEnvToReplace()

@@ -27,7 +27,7 @@
             <Row>
               <Section>
                 <IconButton on:click={() => myDrawerOpen = !myDrawerOpen} class="material-icons">menu</IconButton>
-                <Title>{'TITLE' in process.env ? process.env.TITLE : 'Big Brother Manager'}</Title>
+                <Title>{'BB_MANAGER_TITLE' in process.env ? process.env.BB_MANAGER_TITLE : 'Big Brother Manager'}</Title>
               </Section>
             </Row>
           </TopAppBar>
@@ -36,6 +36,7 @@
               <div class="col-md-6 offset-md-3">
                 <Router url="{url}">
                   <Route path="apps" component="{Services}" />
+                  <Route path="edit/:form" component="{BasicForm}" />
                   <Route path="settings" component="{Settings}" />
                   <Route path="ips" component="{Ips}" />
                   <Route path="versions/:nameApp" component="{Versions}" />
@@ -89,7 +90,7 @@
 		{
 			icon: 'apps',
 			value: 'apps',
-			text: 'Aplications',
+			text: 'Aplicações',
 			link: '/apps',
 			component: Services
 		},

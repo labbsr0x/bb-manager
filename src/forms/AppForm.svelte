@@ -10,8 +10,10 @@
 	import FloatingLabel from '@smui/floating-label';
 	import NotchedOutline from '@smui/notched-outline';
 	import { navigate } from "svelte-routing";
+	import { beforeUpdate, afterUpdate } from 'svelte';
 	import api from '../api/'
 	export let data = {}
+	export let edit = false
 	let namespace = ''
 	let desc = ''
 	let name = ''
@@ -62,10 +64,12 @@ let schemes = ['https', 'http']
 			console.log('err list Settings', err)
 		}
 	}
-
-	onMount(() => {
-		console.log('data', data)
-		listSettings()
+	beforeUpdate(() => {
+		console.log('teste')
+	})
+	onMount(async () => {
+		await listSettings()
+		console.log('data on app form on mount', data)
 		if (!Object.keys(data)) {
 			data = {
 				namespace: '',
@@ -77,7 +81,18 @@ let schemes = ['https', 'http']
 				tls: false,
 				level: 1
 			}
+		} else {
+			namespace = data._namespace || data.namespace
+			desc = data._desc || data.desc
+			name = data._name || data.name
+			scrapePath = data._scrapePath || data.scrapePath
+			ips = data._ips || data.ips
+			scheme = data._scheme || data.scheme
+			tls = data._tls || data.tls
+			level = data._level || data.level
 		}
+		
+		console.log('data on app form on mount', data)
 	})
 	
 </script>
@@ -92,7 +107,7 @@ let schemes = ['https', 'http']
 </style>
 <div class="row">
   <div class="col-12 component">
-	  <Textfield fullwidth bind:value={name} label="Nome do aplicativo" />
+	  <Textfield disabled={edit} fullwidth bind:value={name} label="Nome do aplicativo" />
   </div>
   <div class="col-12 component">
     <Select class="demo-select-width" bind:value={level} label="Nível"  menu$class="demo-select-width">
