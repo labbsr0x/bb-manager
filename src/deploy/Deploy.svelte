@@ -57,7 +57,7 @@ ${basicName}:
 - name: big-brother
   version: ${process.env.BB_MANAGER_CHART_VERSION}
   alias: ${basicName}
-  repository: https://chartmuseum.devops.nuvem.bb.com.br/bb/ath
+  repository: ${process.env.BB_MANAGER_CHART_URL}
 `
 		} catch (err) {
 			console.log(`erro`, err)
