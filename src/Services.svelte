@@ -79,19 +79,16 @@
 	}
 
 	const getIngressStatus = async (app) => {
-		const promsterUrl = `${app._scheme}://${app._name}-promster.ath.servicos.com.br/api/v1/targets`
-		let ingressStatus
-		api.get(promsterUrl).then(response => {
-			console.debug(response.status)
-			if (response.status === 200 ) {
-				ingressStatus = true
-			} else {
-				ingressStatus = false
-			}
-		}).catch(error => {
-			console.debug(`error`, error)
-			ingressStatus = false
-		})
+		let basicName = app._name.split('-')
+		basicName.shift()
+		basicName = basicName.join('-')
+		const promsterUrl = `http://${basicName}-promster.${process.env.BB_MANAGER_DNS_EXTENSION}/api/v1/targets`
+		const res = await api.get(promsterUrl)
+		if (res.status === 200 ) {
+			return 'done'
+		} else {
+			throw new Error(error);
+		}
 	}
 </script>
 <div class="row mt-5">
@@ -101,11 +98,22 @@
 </div>
 <div style="display: flex; flex-wrap: wrap;">
   {#each apps as app, i}
-	{getIngressStatus(app)}
     <div class="card-container">
       <Card style="width: 360px;">
         <Content class="mdc-typography--body2">
-          <h2 class="mdc-typography--headline6" style="margin: 0;">{app._name}</h2>
+          <h2 class="mdc-typography--headline6" style="margin: 0;">
+			{#await getIngressStatus(app)}
+				<p>...waiting</p>
+			{:then icon}
+				<span style="color: green">
+					<Icon class="material-icons">{icon}</Icon>
+				</span>
+			{:catch error}
+				<span style="color: red">
+					<Icon class="material-icons">highlight_off</Icon>
+				</span>
+			{/await}
+			{app._name}</h2>
           <div class="card-internal">
             {app._desc}
           </div>
@@ -126,7 +134,7 @@
             </IconButton>
 						<IconButton color="primary" on:click={deployPage(app._name)}>
 							<Icon class="material-icons">restore_page</Icon>
-            </IconButton>
+			</IconButton>
           </ActionButtons>
         </Actions>
       </Card>
