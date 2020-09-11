@@ -77,6 +77,22 @@
 			console.log(`erro`, err)
 		}
 	}
+
+	const getIngressStatus = async (app) => {
+		const promsterUrl = `${app._scheme}://${app._name}-promster.ath.servicos.com.br/api/v1/targets`
+		let ingressStatus
+		api.get(promsterUrl).then(response => {
+			console.debug(response.status)
+			if (response.status === 200 ) {
+				ingressStatus = true
+			} else {
+				ingressStatus = false
+			}
+		}).catch(error => {
+			console.debug(`error`, error)
+			ingressStatus = false
+		})
+	}
 </script>
 <div class="row mt-5">
   <Button type="button" on:click={newApp} class="btn btn-info">
@@ -85,6 +101,7 @@
 </div>
 <div style="display: flex; flex-wrap: wrap;">
   {#each apps as app, i}
+	{getIngressStatus(app)}
     <div class="card-container">
       <Card style="width: 360px;">
         <Content class="mdc-typography--body2">
