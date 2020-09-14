@@ -27,7 +27,7 @@
             <Row>
               <Section>
                 <IconButton on:click={() => myDrawerOpen = !myDrawerOpen} class="material-icons">menu</IconButton>
-                <Title>{'TITLE' in process.env ? process.env.TITLE : 'Big Brother Manager'}</Title>
+                <Title>{'BB_MANAGER_TITLE' in process.env ? process.env.BB_MANAGER_TITLE : 'Big Brother Manager'}</Title>
               </Section>
             </Row>
           </TopAppBar>
@@ -36,11 +36,12 @@
               <div class="col-md-6 offset-md-3">
                 <Router url="{url}">
                   <Route path="apps" component="{Services}" />
+                  <Route path="edit/:form" component="{BasicForm}" />
                   <Route path="settings" component="{Settings}" />
-                  <Route path="ips/:nameApp" component="{Ips}" />
+                  <Route path="ips" component="{Ips}" />
                   <Route path="versions/:nameApp" component="{Versions}" />
-                  <Route path="newApp" component="{CreateService}" />
                   <Route path="new/:form" component="{BasicForm}" />
+									<Route path="deploy/app" component="{Deploy}" />
                   <Route path="/"><Home /></Route>
                 </Router>
               </div>
@@ -67,7 +68,7 @@
 	import Services from './Services.svelte'
 	import Settings from './Settings.svelte'
 	import BasicForm from './forms/BasicForm.svelte'
-	import CreateService from './CreateService.svelte'
+	import Deploy from './deploy/Deploy.svelte'
 	import Ips from './Ips.svelte'
 	import Versions from './Versions.svelte'
 	export let url = "";
@@ -89,7 +90,7 @@
 		{
 			icon: 'apps',
 			value: 'apps',
-			text: 'Aplications',
+			text: 'Aplicações',
 			link: '/apps',
 			component: Services
 		},

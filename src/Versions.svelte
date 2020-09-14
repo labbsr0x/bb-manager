@@ -13,7 +13,10 @@
 	let versions = []
 	let newVersion = ''
 	let oldName = null
-	let envData = ['piloto', 'prod']
+	let envData = [ 
+		{ env: 'pilot_version', value: 'Piloto' },
+		{ env: 'prod_version', value: 'Producao' }
+	]
 	let envChoice = ''
 
 	async function list() {
@@ -28,7 +31,7 @@
 	}
 	async function deleteVersion(environment, version) {
 		try {
-			await api.post('/remove/ip', {
+			await api.post('/remove/version', {
 				app: nameApp,
 				ip: event.detail.ip
 			})
@@ -65,7 +68,7 @@
     <div class="col-md-4">
       <Select enhanced style="width: -webkit-fill-available;" bind:value={envChoice} label="Plataforma">
         {#each envData as environment}
-          <Option value={environment} selected={envChoice === environment}>{environment}</Option>
+          <Option value={environment.env} selected={envChoice === environment.env}>{environment.value}</Option>
         {/each}
       </Select>
     </div>

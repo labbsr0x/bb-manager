@@ -5,32 +5,38 @@
 	import Button, {Group, GroupItem, Label, Icon} from '@smui/button';
 	import HelperText from '@smui/textfield/helper-text/index';
 	import Textfield, {Input} from '@smui/textfield'
+	import { appName } from './store/app.js';
 	import api from './api'
 	import { beforeUpdate } from 'svelte';
-	export let nameApp = null
 	export const location = ''
+	let nameApp;
 	let ips = []
 	let newIp = ''
 	let nrFiles = ''
 	let oldName = null
 	let exportData = []
 
+	const unsubscribe = appName.subscribe(value => {
+		nameApp = value;
+	})
+
 	async function list() {
 		try {
-			let response = await api.get(`/list/ips/${nameApp}`)
+			let response = await api.get(`/app?name=${nameApp}`)
 			// console.log(`response ips`, response)
-			ips = response.data.result
-			console.log('ips', ips)
+			ips = response.data.result._ips
 		} catch (err) {
 			console.log(`erro`, err)
 		}
 	}
 	async function deleteIp(event) {
 		try {
-			await api.post('/remove/ip', {
-				app: nameApp,
-				ip: event.detail.ip
-			})
+			console.log('app', nameApp, 'ip', event.detail.ip)
+			// await api.post('/app/ip', {
+			// 	name: nameApp,
+			//	ips: event.detail.ip
+			// })
+			api.delete(`/app/ip?name=${nameApp}&ips=${event.detail.ip}`)
 			await list()
 		} catch (err) {
 			console.log(`erro`, err)
@@ -44,17 +50,18 @@
 				let hasIps = newIp.split(",").map(o => o.replace(/\"/g, ""))
 				hasIps = hasIps.filter(i => i !== "" && i !== null && i !== undefined)
 				// console.log(`has ips`, hasIps)
+				console.log("nameApp", nameApp)
 				let response = null
 				if (hasIps.length > 1) {
-					let requests = hasIps.map(i => api.post('/add/ip', {
-						app: nameApp,
-						ip: i
+					let requests = hasIps.map(i => api.patch('/app/ip', {
+						name: nameApp,
+						ips: i
 					}))
 					response = await Promise.all(requests)
 				} else {
-					response = await api.post('/add/ip', {
-						app: nameApp,
-						ip: newIp
+					response = await api.patch('/app/ip', {
+						name: nameApp,
+						ips: newIp
 					})
 				}
 				newIp = ''
@@ -89,8 +96,8 @@
 </script>
 <TitleList title="Máquinas do Aplicativo" />
 <div class="row">
-    <div class="col-md-5">
-      <Textfield label="IP">
+    <div class="col-8">
+      <Textfield  label="IP">
         <Input bind:value={newIp} id="input-manual-c" aria-controls="helper-text-manual-c" aria-describedby="helper-text-manual-c" />
         <Button on:click={addIp} color="primary">
           <Icon class="material-icons">add_box</Icon>
@@ -103,3 +110,8 @@
   <FileList files={exportData} nameApp={nameApp} />
   <IPList ips={ips} on:handleDelete={deleteIp} />
 </div>
+<style>
+* :global(select, .mdc-text-field__input ) {
+    min-width: 400px;
+  }
+</style>
